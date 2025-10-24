@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchQuestions } from "../api/apiCall.ts";
-import type { Question } from "../api/apiCall.ts";
+import { fetchQuestions } from "../opentdbApi/apiCall.ts";
+import type { Question } from "../opentdbApi/apiCall.ts";
 import {
   BarChart,
   Bar,
