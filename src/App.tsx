@@ -2,7 +2,6 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import QuestionChart from "./components/QuestionChart";
 import CategoryList from "./components/CategoryList";
 
 function App() {
@@ -32,7 +31,6 @@ function App() {
       </p>
       <div style={{ textAlign: "center", padding: "2rem" }}>
         <h1>Open Trivia Dashboard</h1>
-        <QuestionChart />
         <h2>Categories</h2>
         <CategoryList />
       </div>
