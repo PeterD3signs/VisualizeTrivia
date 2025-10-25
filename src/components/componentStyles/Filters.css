@@ -1,5 +1,5 @@
 .filters {
-    width: 19rem;
+    width: 20rem;
     background-color: #e5e7eb;
     /* light gray daisyUI bg */
     padding: 12px;
@@ -16,15 +16,6 @@
     margin-left: 0.15rem;
 }
 
-.filters-button {
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: none;
-    background-color: #3b82f6;
-    color: white;
-    cursor: pointer;
-}
-
 .filters-checkbox-label {
     display: flex;
     justify-content: space-between;
@@ -32,40 +23,23 @@
 }
 
 .filters-group {
-    border-left: 2px solid #9ca3af;
+    border-left: 1px solid;
     padding-left: 6px;
     margin-bottom: 6px;
+    margin-left: 1.2rem;
+    position: relative;
 }
 
 .filters-group-title {
-    font-weight: bold;
-    margin-bottom: 4px;
+    position: absolute;
+    top: 5.5rem;
+    left: -7rem;
+    transform: rotate(-90deg);
+    color: var(--color-primary)
 }
 
 .dark-mode-toggle {
     margin-top: auto;
-}
-
-.toggle-container {
-    display: flex;
-    border: 1px solid var(--color-primary);
-    border-radius: 0.375rem;
-    overflow: hidden;
-    width: fit-content;
-    cursor: pointer;
-}
-
-.toggle-option {
-    padding: 0.5rem 1rem;
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    transition: background-color 0.2s, color 0.2s;
-    user-select: none;
-}
-
-.toggle-option.selected {
-    background-color: var(--color-primary);
-    color: var(--color-bg);
 }
 
 /* toggle: */
@@ -74,6 +48,7 @@
     align-items: center;
 
 }
+
 .toggle-button {
     cursor: pointer;
     background-color: var(--color-bg);
@@ -89,8 +64,9 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    position:relative;
+    position: relative;
 }
+
 .toggle-circle {
     position: absolute;
     top: 0.17rem;
@@ -102,13 +78,16 @@
     user-select: none;
     border-radius: 1rem;
 }
+
 .toggle-circle.selected {
     left: 1.55rem;
 }
-.toggle-p{
+
+.toggle-p {
     color: var(--color-primary);
     font-weight: bold;
 }
+
 p {
     margin: 0;
     padding: 0;
@@ -116,9 +95,120 @@ p {
     padding-right: 0.15rem;
 }
 
+
 /* dividing line: */
 .dividing-line {
     height: 1px;
     width: 17rem;
     background-color: var(--color-text);
+}
+
+/* check box: */
+.filters-checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.5rem;
+    user-select: none;
+}
+
+.filters-checkbox-label input[type="checkbox"] {
+    /* removes default checkbox */
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.3rem;
+    height: 1.3rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.7rem;
+    background-color: var(--color-bg);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.filters-checkbox-label input[type="checkbox"]:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.filters-checkbox-label input[type="checkbox"]:checked::after {
+    content: "✓";
+    display: block;
+    text-align: center;
+    color: var(--color-bg);
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+}
+
+.filters-text-button {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0;
+    padding: 0;
+    align-self: flex-start;
+    transition: color 0.2s;
+  }
+  
+  .filters-text-button:hover {
+    color: var(--color-accent);
+  }
+
+  .filters-text-button-wrapper {
+    display: flex;
+    justify-content: end;
+  }
+
+  .additional-top-margin {
+    margin-top: 2rem;
+  }
+
+  /* misc: */
+  /* Section container */
+.misc-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-border);
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Each misc item (toggle + button) */
+.misc-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+}
+
+/* Dark mode toggle switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 2.5rem;
+    height: 1.3rem;
+    margin: 0;
+    padding: 0;
+}
+
+/* Refresh Data Button */
+.refresh-data button {
+    width: 15rem;
+    background: none;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    margin-left: 3rem;
+    cursor: pointer;
+    color: var(--color-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.refresh-data button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
 }

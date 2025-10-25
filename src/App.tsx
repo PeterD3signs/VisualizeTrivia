@@ -11,7 +11,7 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
 
   const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('acceptance');  //should the chart show the question count devided by their difficulty or by their acceptance status
-  const [selectedLevels, setSelectedLevels] = useState<string[]>(['easy', 'medium', 'hard', 'all']); //question difficulty / acceptance levels - alternative: 'pending', 'verified', 'rejected', 'all'.
+  const [selectedLevels, setSelectedLevels] = useState<string[]>(['pending', 'verified', 'rejected', 'sum']); //question difficulty / acceptance levels
   const [darkMode, setDarkMode] = useState(false); // TODO
 
   // Group the categories based on their type: (accepts all categories in one array; each category is eihther "General" or has a prefix with its type)
@@ -93,7 +93,7 @@ const App: React.FC = () => {
           setDisplayMode={setDisplayMode}
           selectedLevels={selectedLevels}
           setSelectedLevels={setSelectedLevels}
-          groupCategories={groupedCategories}
+          groupedCategories={groupedCategories}
           setDisplayedCategories={setDisplayedCategories}
           changeCategorySelection={changeCategorySelection}
           displayedCategories={displayedCategories}
