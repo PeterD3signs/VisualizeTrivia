@@ -189,7 +189,7 @@ const Filters: React.FC<Props> = ({
                 </div>
 
                 {/* Refresh Data Button */}
-                <div className=" refresh-data">
+                <div className="misc-item refresh-data">
                     <button
                         className="filters-text-button"
                         onClick={() => window.location.reload()}

@@ -8,7 +8,7 @@ const Header: React.FC = () => {
         <header className="header">
             <div className="header-start">
                 <div className="color-square"></div>
-                <h1 className="header-title">VisualiseTrivia</h1>
+                <h1 className="header-title">VisualizeTrivia</h1>
             </div>
             <button className="header-button">?</button>
         </header>
