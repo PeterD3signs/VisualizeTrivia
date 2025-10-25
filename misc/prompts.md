@@ -9,7 +9,7 @@ This is why I decided to use AI for tedious parts (or to create skeletons for gi
 I decided to include some of the prompts here for the sake of transparency.
 
 ## Prompt 1 - Skeleton for components that use the already implemented API logic and data structures:
-```text prompt
+
 I am making a React Ts app that is going to be hosted on gitHub pages.
 I need to present some cumulative data on a bar chart.
 I have already implemented the necessary functionality, so let’s get straight to doing the components for the UI.
@@ -55,4 +55,3 @@ This is all in terms of the content, now in terms of style:
 I want to use some pre-determined colours for primary and accent elements - think daisyUI for TailwindCSS
 (To be clear, I don't use TailwindCSS in my project, this is just an example).
 For the rest, just apply some styles and I will ask you to correct them if necessary.
-```
