@@ -15,7 +15,7 @@ const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false); // TODO
 
   // Group the categories based on their type: (accepts all categories in one array; each category is eihther "General" or has a prefix with its type)
-  const groupCategories = (categories: Category[], prevState: GroupedCategory[]): GroupedCategory[] => {
+  const groupCategories = (categories: Category[]): GroupedCategory[] => {
     const grouped: Record<string, Category[]> = {};
     categories.forEach((cat) => {
       if (!cat.name) return;  //if the category does not have a name, it is better to skip it
@@ -34,15 +34,20 @@ const App: React.FC = () => {
     });
 
     //return the Object as a GroupedCategory array:
-    return (Object.entries(grouped).map(([title, list,]) => {
-      const prevElement = prevState.find((p) => p.title === title); //access the previous selection value
-      return {
-        title,
-        list,
-        selected: prevElement?.selected ?? true //keep the old value or default to true
-      }
-    }));
+    return (Object.entries(grouped).map(([title, list,]) => ({ title, list})));
   };
+
+  const changeCategorySelection = ((prevState: GroupedCategory[], IdOfCatToChange: number): GroupedCategory[] => {
+    //iterate over groups -> next iterate over categories (cat) -> if cat.id === IdOfCatToChange -> change its boolean value
+    return prevState.map(group => ({
+      ...group,
+      list: group.list.map(cat =>
+        String(cat.id) === String(IdOfCatToChange)
+          ? { ...cat, selected: !cat.selected } // toggle only the selected category
+            : cat // rewrite the rest
+        ),
+    }));
+  });
 
   //dynamically calculate necessary values and update the UI:
   useEffect(() => {
@@ -74,6 +79,7 @@ const App: React.FC = () => {
   if (!coreReady) return <div className="loading">Loading...</div>;   //TODO: make this be part of the chart only - some parts of the UI can be displayed ealier to make the user feel like things are already happenign
 
   //TODO: check styles
+  //TODO: add about
   return (
     <div className={darkMode ? 'app dark' : 'app'}> 
       <Header />

@@ -8,7 +8,8 @@ interface Props {
     selectedLevels: string[];   //difficulty levels / acceptance levels - 'easy', 'medium', 'hard', 'all' / 'pending', 'verified', 'rejected', 'all'.
     setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
     groupCategories: GroupedCategory[];
-    setGroupedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+    setGroupedCategories: React.Dispatch<React.SetStateAction<GroupedCategory[]>>;
+    changeCategorySelection: (prevState: GroupedCategory[], IdOfCatToChange: number) => GroupedCategory[];
     darkMode: boolean;
     setDarkMode: (value: boolean) => void;
 }
@@ -20,6 +21,7 @@ const Filters: React.FC<Props> = ({
     setSelectedLevels,
     groupCategories,
     setGroupedCategories,
+    changeCategorySelection,
     darkMode,
     setDarkMode,
 }) => {
@@ -27,10 +29,6 @@ const Filters: React.FC<Props> = ({
         setSelectedLevels(prev =>
             prev.includes(level) ? prev.filter(l => l !== level) : [...prev, level]
         );
-    };
-
-    const toggleCategory = (category: string) => {
-        //TODO!
     };
 
     return (
@@ -60,12 +58,16 @@ const Filters: React.FC<Props> = ({
                     <div key={group.title} className="filters-group">
                         <span className="filters-group-title">{group.title}</span>
                         {group.list.map(cat => (
-                            <label key={cat.name} className="filters-checkbox-label">
+                            <label key={cat.id} className="filters-checkbox-label">
                                 <span>{cat.name}</span>
                                 <input
                                     type="checkbox"
-                                    checked={selectedCategories.includes(cat.name || '')}
-                                    onChange={() => toggleCategory(cat.name || '')}
+                                    checked={!!cat.selected} // use the boolean we just toggle
+                                    onChange={() => {
+                                        setGroupedCategories(prev =>
+                                            changeCategorySelection(prev, cat.id)
+                                        );
+                                    }}
                                 />
                             </label>
                         ))}

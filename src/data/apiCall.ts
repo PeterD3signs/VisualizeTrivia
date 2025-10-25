@@ -99,6 +99,44 @@ async function fetchCategoryCounts(): Promise<CategoryAcceptanceCount[]> {
     return categoryArray;
 }
 
+
+// Returns all categories (together with their names and stats about questions)
+export async function getCategorySummary(): Promise<Category[]> {
+
+    let names: CategoryName[] = [];
+    let acceptanceCount: CategoryAcceptanceCount[] = [];
+
+    // Get data from API
+    try {
+        names = await fetchCategoryNames();
+        acceptanceCount = await fetchCategoryCounts();
+    } catch (e) {   // {TODO}
+        console.error(e);
+    }
+
+    // Add the "All" category to names:
+    names.push({ id: maxId, name: "All" });
+
+    // Populating global counts
+    globalCountsCache = names.map((nItem: CategoryName) => {
+        const aItem = acceptanceCount.find((a) => nItem.id === a.id);
+        return {
+            id: nItem.id,
+            name: nItem.name ?? "",
+            total_num_of_questions: aItem?.total_num_of_questions ?? 0,
+            total_num_of_pending_questions: aItem?.total_num_of_pending_questions ?? 0,
+            total_num_of_rejected_questions: aItem?.total_num_of_rejected_questions ?? 0,
+            total_num_of_verified_questions: aItem?.total_num_of_rejected_questions ?? 0,
+            total_easy_question_count: 0,
+            total_medium_question_count: 0,
+            total_hard_question_count: 0,
+            selected: true  //preasing the true value
+        }
+    })
+
+    return globalCountsCache;
+}
+
 // Fetch adifficulty counts [based on IDs gathered with "fetchCategoryCounts()"]
 export async function getDifficultyCounts(cat: Category): Promise<Category[]> {
 
@@ -142,40 +180,4 @@ export async function getDifficultyCounts(cat: Category): Promise<Category[]> {
 
     return globalCountsCache;
 
-}
-
-// Returns all categories (together with their names and stats about questions)
-export async function getCategorySummary(): Promise<Category[]> {
-
-    let names: CategoryName[] = [];
-    let acceptanceCount: CategoryAcceptanceCount[] = [];
-
-    // Get data from API
-    try {
-        names = await fetchCategoryNames();
-        acceptanceCount = await fetchCategoryCounts();
-    } catch (e) {   // {TODO}
-        console.error(e);
-    }
-
-    // Add the "All" category to names:
-    names.push({ id: maxId, name: "All" });
-
-    // Populating global counts
-    globalCountsCache = names.map((nItem: CategoryName) => {
-        const aItem = acceptanceCount.find((a) => nItem.id === a.id);
-        return {
-            id: nItem.id,
-            name: nItem.name ?? "",
-            total_num_of_questions: aItem?.total_num_of_questions ?? 0,
-            total_num_of_pending_questions: aItem?.total_num_of_pending_questions ?? 0,
-            total_num_of_rejected_questions: aItem?.total_num_of_rejected_questions ?? 0,
-            total_num_of_verified_questions: aItem?.total_num_of_rejected_questions ?? 0,
-            total_easy_question_count: 0,
-            total_medium_question_count: 0,
-            total_hard_question_count: 0
-        }
-    })
-
-    return globalCountsCache;
 }
