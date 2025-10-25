@@ -10,7 +10,6 @@ const Header: React.FC = () => {
                 <div className="color-square"></div>
                 <h1 className="header-title">VisualizeTrivia</h1>
             </div>
-            <button className="header-button">?</button>
         </header>
     );
 };

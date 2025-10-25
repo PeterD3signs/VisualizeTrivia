@@ -62,7 +62,7 @@ const App: React.FC = () => {
         );
         setCoreReady(true); //update to no longer show "loading..."
 
-        for (const cat of quick) {  //dynamically load additional data that takes longer to fetch from the API 
+        for (const cat of quick.slice(0, -1)) {  //dynamically load additional data that takes longer to fetch from the API (categorie "ALL" excluded)
           try {
             const full = await getDifficultyCounts(cat);
             setGroupedCategories(groupCategories(full));
@@ -74,8 +74,17 @@ const App: React.FC = () => {
         setError(String(e));
       }
     }
+
     fetchCategories();
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark") setDarkMode(true);
   }, []);
+
+  useEffect(() => {
+    const theme = darkMode ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [darkMode]);
 
   //TODO: React to filter changes
 

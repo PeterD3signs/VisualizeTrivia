@@ -2,18 +2,12 @@
   background-color: #f3f4f6;
   color: #1f2937;
   min-height: 100vh;
-  font-family: sans-serif;
+  font-family: monospace;
 }
 
 .app.dark {
   background-color: #1f2937;
   color: #f9fafb;
-}
-
-.main-content {
-  display: flex;
-  padding: 16px;
-  gap: 16px;
 }
 
 .loading, .error {

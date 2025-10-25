@@ -16,15 +16,6 @@
   margin-right: 2rem;
 }
 
-.header-button {
-  background-color: var(--color-accent);
-  color: var(--color-text);
-  border: none;
-  margin: 2rem;
-  border-radius: 1rem;
-  cursor: pointer;
-}
-
 .header-start {
   display: flex;
   align-items: center;
@@ -34,4 +25,5 @@
 .header-title{
   margin: 0;
   padding: 0;
+  color: var(--color-title);
 }

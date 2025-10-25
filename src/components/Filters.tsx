@@ -176,16 +176,13 @@ const Filters: React.FC<Props> = ({
             <p><b>MISC:</b></p>
             <div className="misc-controls">
                 {/* Dark Mode Toggle */}
-                <div>
-                    <span>Dark Mode</span>
-                    <label className="toggle-switch">
-                        <input
-                            type="checkbox"
-                            checked={darkMode}
-                            onChange={() => setDarkMode(!darkMode)}
-                        />
-                        <span className="toggle-slider"></span>
-                    </label>
+                <div className="data-type-toggle-dark-mode">
+                    <span className={`${darkMode ? "primary-text-color" : ""}`}>Dark Mode</span>
+                    <div className="data-type-toggle">
+                        <button className="toggle-button" onClick={() => setDarkMode(!darkMode)}>
+                            <div className={`toggle-circle ${darkMode ? "selected" : ""}`}></div>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Refresh Data Button */}
