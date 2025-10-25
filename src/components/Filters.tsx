@@ -5,11 +5,10 @@ import type { GroupedCategory } from '../data/categories';
 interface Props {
     displayMode: 'difficulty' | 'acceptance';
     setDisplayMode: (mode: 'difficulty' | 'acceptance') => void;
-    selectedLevels: string[];
+    selectedLevels: string[];   //difficulty levels / acceptance levels - 'easy', 'medium', 'hard', 'all' / 'pending', 'verified', 'rejected', 'all'.
     setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
     groupCategories: GroupedCategory[];
-    selectedCategories: string[];
-    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+    setGroupedCategories: React.Dispatch<React.SetStateAction<string[]>>;
     darkMode: boolean;
     setDarkMode: (value: boolean) => void;
 }
@@ -20,21 +19,18 @@ const Filters: React.FC<Props> = ({
     selectedLevels,
     setSelectedLevels,
     groupCategories,
-    selectedCategories,
-    setSelectedCategories,
+    setGroupedCategories,
     darkMode,
     setDarkMode,
 }) => {
-    const toggleLevel = (level: string) => {
+    const toggleLevel = (level: string) => {    //add or delete a given difficulty level.
         setSelectedLevels(prev =>
             prev.includes(level) ? prev.filter(l => l !== level) : [...prev, level]
         );
     };
 
     const toggleCategory = (category: string) => {
-        setSelectedCategories(prev =>
-            prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
-        );
+        //TODO!
     };
 
     return (

@@ -6,19 +6,20 @@ import { getCategorySummary, getDifficultyCounts } from './data/apiCall';
 import type { Category, GroupedCategory } from './data/categories';
 
 const App: React.FC = () => {
-  const [groupedCategories, setGroupedCategories] = useState<GroupedCategory[]>([]);
-  const [coreReady, setCoreReady] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [groupedCategories, setGroupedCategories] = useState<GroupedCategory[]>([]);  //categories dynamically grouped by their type (default: "general", "science", "entertainment")
+  const [coreReady, setCoreReady] = useState(false);  //to see if loading of core API data is complete (see apiCall.ts)
+  const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
 
-  const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('difficulty');
-  const [selectedLevels, setSelectedLevels] = useState<string[]>(['easy', 'medium', 'hard', 'all']);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [darkMode, setDarkMode] = useState(false);
+  const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('difficulty');  //should the chart show the question count devided by their difficulty or by their acceptance status
+  const [selectedLevels, setSelectedLevels] = useState<string[]>(['easy', 'medium', 'hard', 'all']); //question difficulty / acceptance levels - alternative: 'pending', 'verified', 'rejected', 'all'.
+  const [darkMode, setDarkMode] = useState(false); // TODO
 
-  const groupCategories = (categories: Category[]): GroupedCategory[] => {
+  // Group the categories based on their type: (accepts all categories in one array; each category is eihther "General" or has a prefix with its type)
+  const groupCategories = (categories: Category[], prevState: GroupedCategory[]): GroupedCategory[] => {
     const grouped: Record<string, Category[]> = {};
     categories.forEach((cat) => {
-      if (!cat.name) return;
+      if (!cat.name) return;  //if the category does not have a name, it is better to skip it
+      
       let title = "General";
       let displayName = cat.name;
       if (cat.name.includes(":")) {
@@ -26,47 +27,55 @@ const App: React.FC = () => {
         title = parts[0].trim();
         displayName = parts[1].trim();
       }
+
       if (!grouped[title]) grouped[title] = [];
       grouped[title].push({ ...cat, name: displayName });
+
     });
-    return Object.entries(grouped).map(([title, list]) => ({ title, list }));
+
+    //return the Object as a GroupedCategory array:
+    return (Object.entries(grouped).map(([title, list,]) => {
+      const prevElement = prevState.find((p) => p.title === title); //access the previous selection value
+      return {
+        title,
+        list,
+        selected: prevElement?.selected ?? true //keep the old value or default to true
+      }
+    }));
   };
 
+  //dynamically calculate necessary values and update the UI:
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const quick = await getCategorySummary();
-        setGroupedCategories(groupCategories(quick));
-        setCoreReady(true);
+        
+        const quick = await getCategorySummary(); //load core data
+        setGroupedCategories(groupCategories(quick, groupedCategories));
+        setCoreReady(true); //update to no longer show "loading..."
 
-        for (const cat of quick) {
+        for (const cat of quick) {  //dynamically load additional data that takes longer to fetch from the API 
           try {
             const full = await getDifficultyCounts(cat);
-            setGroupedCategories(groupCategories(full));
-          } catch (e) {
+            setGroupedCategories(groupCategories(full, groupedCategories));
+          } catch (e) { //If any errors are detected it is important to not break the function. At this point the core data is succesfully loaded.
             console.warn(`Second fetch failed for category ${cat.id}:`, e);
           }
         }
-      } catch (e) {
+      } catch (e) { //display the braking error
         setError(String(e));
       }
     }
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    if (groupedCategories.length && selectedCategories.length === 0) {
-      setSelectedCategories(
-        groupedCategories.flatMap(g => g.list.map(c => c.name || ''))
-      );
-    }
-  }, [groupedCategories]);
+  //TODO: React to filter changes
 
-  if (error) return <div className="error">Error: {error}</div>;
-  if (!coreReady) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">Error: {error}</div>;  //TODO: make this display fallback data
+  if (!coreReady) return <div className="loading">Loading...</div>;   //TODO: make this be part of the chart only - some parts of the UI can be displayed ealier to make the user feel like things are already happenign
 
+  //TODO: check styles
   return (
-    <div className={darkMode ? 'app dark' : 'app'}>
+    <div className={darkMode ? 'app dark' : 'app'}> 
       <Header />
       <div className="main-content">
         <Filters
@@ -75,8 +84,7 @@ const App: React.FC = () => {
           selectedLevels={selectedLevels}
           setSelectedLevels={setSelectedLevels}
           groupCategories={groupedCategories}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
+          setGroupedCategories={setGroupedCategories}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
         />

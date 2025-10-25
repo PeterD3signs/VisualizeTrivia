@@ -1,3 +1,4 @@
+//Interfaces:
 export interface CategoryAcceptanceCount {
     id: number;
     total_num_of_questions: number | null;
@@ -21,10 +22,11 @@ export interface CategoryName {
 export type GroupedCategory = {
     title: string;
     list: Category[];
+    selected: boolean;
 };
 
 //In case api calls completely dont work:
-export const fallbackCategoris: { title: string; list: Category[] }[] = [
+export const fallbackCategories: { title: string; list: Category[] }[] = [   //TODO: add more data here
     {
         title: 'Science',
         list: [
