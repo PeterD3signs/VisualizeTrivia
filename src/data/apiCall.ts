@@ -22,44 +22,7 @@
 //    A simple solution to this is starting by displaying data by completeness by default (fast)
 //    and load it in the backround so that it displays instantly when the user changes the filter
 
-//Interfaces
-export interface CategoryAcceptanceCount {
-    id: number;
-    total_num_of_questions: number | null;
-    total_num_of_pending_questions: number | null;
-    total_num_of_verified_questions: number | null;
-    total_num_of_rejected_questions: number | null;
-}
-
-export interface CategoryDifficultyCount {
-    id: number;
-    total_easy_question_count: number | null;
-    total_medium_question_count: number | null;
-    total_hard_question_count: number | null;
-}
-
-export interface Category extends CategoryAcceptanceCount {
-    name: string | null;
-    total_easy_question_count: number | null;
-    total_medium_question_count: number | null;
-    total_hard_question_count: number | null;
-
-}
-
-export interface CategoryName {
-    id: number;
-    name: string | null;
-}
-
-
-export interface Question {
-    category: string;
-    type: string;
-    difficulty: string;
-    question: string;
-    correct_answer: string;
-    incorrect_answers: string[];
-}
+import type { Category, CategoryName, CategoryAcceptanceCount } from "./categories";
 
 // Counts cache (to not run calls all the time)
 let globalCountsCache: Category[] = [];
@@ -138,44 +101,44 @@ async function fetchCategoryCounts(): Promise<CategoryAcceptanceCount[]> {
 
 // Fetch adifficulty counts [based on IDs gathered with "fetchCategoryCounts()"]
 export async function getDifficultyCounts(cat: Category): Promise<Category[]> {
-        
-        const adr = `https://opentdb.com/api_count.php?category=${cat.id}`;
-        try {
-            
-            let res: Response | null = null;
-            let attempts = 0;
 
-            while (attempts < 5) { // max 5 retries
-                attempts++;
-                try {
-                    
-                    res = await fetch(adr);
-                    if (res.status === 429) { // rate limit
-                        console.warn(`Rate limit hit for category ${cat.id}, retrying...`);
-                        await new Promise(resolve => setTimeout(resolve, 500)); // wait 500ms
-                        continue; // retry
-                    }
+    const adr = `https://opentdb.com/api_count.php?category=${cat.id}`;
+    try {
 
-                    if (!res.ok) throw new Error(`Network response not ok: ${res.status}`);
-                    break; // success, exit retry loop
+        let res: Response | null = null;
+        let attempts = 0;
 
-                } catch (err) {
-                    console.error(`Fetch error for category ${cat.id}:`, err);
-                    if (attempts >= 5) throw err; // give up after max attempts
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // wait before retry
+        while (attempts < 5) { // max 5 retries
+            attempts++;
+            try {
+
+                res = await fetch(adr);
+                if (res.status === 429) { // rate limit
+                    console.warn(`Rate limit hit for category ${cat.id}, retrying...`);
+                    await new Promise(resolve => setTimeout(resolve, 500)); // wait 500ms
+                    continue; // retry
                 }
-            }
 
-            if (res){
-                const data = await res.json();
-                cat.total_easy_question_count = Number(data?.category_question_count?.total_easy_question_count ?? 0);
-                cat.total_medium_question_count = Number(data?.category_question_count?.total_medium_question_count ?? 0);
-                cat.total_hard_question_count = Number(data?.category_question_count?.total_hard_question_count ?? 0);
-            }
+                if (!res.ok) throw new Error(`Network response not ok: ${res.status}`);
+                break; // success, exit retry loop
 
-        } catch (err) {
-            console.warn(`Failed to update category ${cat.id}:`, err);
+            } catch (err) {
+                console.error(`Fetch error for category ${cat.id}:`, err);
+                if (attempts >= 5) throw err; // give up after max attempts
+                await new Promise(resolve => setTimeout(resolve, 1000)); // wait before retry
+            }
         }
+
+        if (res) {
+            const data = await res.json();
+            cat.total_easy_question_count = Number(data?.category_question_count?.total_easy_question_count ?? 0);
+            cat.total_medium_question_count = Number(data?.category_question_count?.total_medium_question_count ?? 0);
+            cat.total_hard_question_count = Number(data?.category_question_count?.total_hard_question_count ?? 0);
+        }
+
+    } catch (err) {
+        console.warn(`Failed to update category ${cat.id}:`, err);
+    }
 
     return globalCountsCache;
 

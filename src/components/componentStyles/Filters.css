@@ -1,0 +1,49 @@
+.filters {
+    width: 250px;
+    background-color: #e5e7eb; /* light gray daisyUI bg */
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filters-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .filters-button {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: none;
+    background-color: #3b82f6;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .filters-button:hover {
+    background-color: #2563eb;
+  }
+  
+  .filters-checkbox-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .filters-group {
+    border-left: 2px solid #9ca3af;
+    padding-left: 6px;
+    margin-bottom: 6px;
+  }
+  
+  .filters-group-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .dark-mode-toggle {
+    margin-top: auto;
+  }

@@ -1,6 +1,8 @@
+//{TODO: Safe delete}
+
 import { useEffect, useState } from "react";
-import { getCategorySummary, getDifficultyCounts } from "../opentdbApi/apiCall";
-import type { Category } from "../opentdbApi/apiCall";
+import { getCategorySummary, getDifficultyCounts } from "../data/apiCall";
+import type { Category } from "../data/categories";
 
 type GroupedCategory = {
     title: string;
