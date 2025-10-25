@@ -1,5 +1,5 @@
 import React from 'react';
-import './Header.css';
+import './componentStyles/Header.css';
 
 //TODO: modify at the end of everything
 

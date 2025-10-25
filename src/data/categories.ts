@@ -12,7 +12,6 @@ export interface Category extends CategoryAcceptanceCount {
     total_easy_question_count: number | null;
     total_medium_question_count: number | null;
     total_hard_question_count: number | null;
-    selected: boolean;
 }
 
 export interface CategoryName {
@@ -24,6 +23,11 @@ export type GroupedCategory = {
     title: string;
     list: Category[];
 };
+
+export type DisplayedCategory = {
+    id: number;
+    display: boolean;
+}
 
 //In case api calls completely dont work:
 export const fallbackCategories: { title: string; list: Category[] }[] = [   //TODO: add more data here
@@ -39,8 +43,7 @@ export const fallbackCategories: { title: string; list: Category[] }[] = [   //T
                 total_num_of_rejected_questions: 20,
                 total_easy_question_count: 30,
                 total_medium_question_count: 50,
-                total_hard_question_count: 40,
-                selected: true
+                total_hard_question_count: 40
             },
             {
                 id: 2,
@@ -51,8 +54,7 @@ export const fallbackCategories: { title: string; list: Category[] }[] = [   //T
                 total_num_of_rejected_questions: 20,
                 total_easy_question_count: 25,
                 total_medium_question_count: 40,
-                total_hard_question_count: 35,
-                selected: true
+                total_hard_question_count: 35
             },
         ],
     },
@@ -68,8 +70,7 @@ export const fallbackCategories: { title: string; list: Category[] }[] = [   //T
                 total_num_of_rejected_questions: 10,
                 total_easy_question_count: 20,
                 total_medium_question_count: 30,
-                total_hard_question_count: 30,
-                selected: true
+                total_hard_question_count: 30
             },
         ],
     },

@@ -1,16 +1,17 @@
 import React from 'react';
-import './compontStyles/Filters.css';
-import type { GroupedCategory } from '../data/categories';
+import './componentStyles/Filters.css';
+import type { DisplayedCategory, GroupedCategory } from '../data/categories';
 
 interface Props {
-    displayMode: 'difficulty' | 'acceptance';
-    setDisplayMode: (mode: 'difficulty' | 'acceptance') => void;
     selectedLevels: string[];   //difficulty levels / acceptance levels - 'easy', 'medium', 'hard', 'all' / 'pending', 'verified', 'rejected', 'all'.
-    setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
+    displayMode: 'difficulty' | 'acceptance';
     groupCategories: GroupedCategory[];
-    setGroupedCategories: React.Dispatch<React.SetStateAction<GroupedCategory[]>>;
-    changeCategorySelection: (prevState: GroupedCategory[], IdOfCatToChange: number) => GroupedCategory[];
+    displayedCategories: DisplayedCategory[];
     darkMode: boolean;
+    setDisplayMode: (mode: 'difficulty' | 'acceptance') => void;
+    setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
+    setDisplayedCategories: React.Dispatch<React.SetStateAction<DisplayedCategory[]>>;
+    changeCategorySelection: (prevState: DisplayedCategory[], IdOfCatToChange: number) => DisplayedCategory[];
     setDarkMode: (value: boolean) => void;
 }
 
@@ -20,7 +21,8 @@ const Filters: React.FC<Props> = ({
     selectedLevels,
     setSelectedLevels,
     groupCategories,
-    setGroupedCategories,
+    setDisplayedCategories,
+    displayedCategories,
     changeCategorySelection,
     darkMode,
     setDarkMode,
@@ -57,20 +59,26 @@ const Filters: React.FC<Props> = ({
                 {groupCategories.map(group => (
                     <div key={group.title} className="filters-group">
                         <span className="filters-group-title">{group.title}</span>
-                        {group.list.map(cat => (
-                            <label key={cat.id} className="filters-checkbox-label">
-                                <span>{cat.name}</span>
-                                <input
-                                    type="checkbox"
-                                    checked={!!cat.selected} // use the boolean we just toggle
-                                    onChange={() => {
-                                        setGroupedCategories(prev =>
-                                            changeCategorySelection(prev, cat.id)
-                                        );
-                                    }}
-                                />
-                            </label>
-                        ))}
+                        {group.list.map(cat => {
+                            // Find the matching category in the flat displayedCategories array
+                            const displayedCat = displayedCategories.find(dc => dc.id === cat.id);
+                            const isChecked = displayedCat?.display ?? true; // default to true if not found
+
+                            return (
+                                <label key={cat.id} className="filters-checkbox-label">
+                                    <span>{cat.name} {cat.id}</span>
+                                    <input
+                                        type="checkbox"
+                                        checked={isChecked}
+                                        onChange={() => {
+                                            setDisplayedCategories(prev =>
+                                                changeCategorySelection(prev, cat.id)
+                                            );
+                                        }}
+                                    />
+                                </label>
+                            );
+                        })}
                     </div>
                 ))}
             </div>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Filters from './components/Filters';
-import QuestionsChart from './components/QuestionChart';
 import { getCategorySummary, getDifficultyCounts } from './data/apiCall';
-import type { Category, GroupedCategory } from './data/categories';
+import type { Category, GroupedCategory, DisplayedCategory } from './data/categories';
 
 const App: React.FC = () => {
   const [groupedCategories, setGroupedCategories] = useState<GroupedCategory[]>([]);  //categories dynamically grouped by their type (default: "general", "science", "entertainment")
+  const [displayedCategories, setDisplayedCategories] = useState<DisplayedCategory[]>([]);  //should this category be displayed on the graph?
   const [coreReady, setCoreReady] = useState(false);  //to see if loading of core API data is complete (see apiCall.ts)
   const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
 
@@ -19,7 +19,8 @@ const App: React.FC = () => {
     const grouped: Record<string, Category[]> = {};
     categories.forEach((cat) => {
       if (!cat.name) return;  //if the category does not have a name, it is better to skip it
-      
+      if (cat.name == "All") return;  //the "all" category will be grupped separatelly
+
       let title = "General";
       let displayName = cat.name;
       if (cat.name.includes(":")) {
@@ -34,34 +35,37 @@ const App: React.FC = () => {
     });
 
     //return the Object as a GroupedCategory array:
-    return (Object.entries(grouped).map(([title, list,]) => ({ title, list})));
+    return Object.entries(grouped).map(([title, list]) => ({title, list}));
   };
 
-  const changeCategorySelection = ((prevState: GroupedCategory[], IdOfCatToChange: number): GroupedCategory[] => {
-    //iterate over groups -> next iterate over categories (cat) -> if cat.id === IdOfCatToChange -> change its boolean value
-    return prevState.map(group => ({
-      ...group,
-      list: group.list.map(cat =>
-        String(cat.id) === String(IdOfCatToChange)
-          ? { ...cat, selected: !cat.selected } // toggle only the selected category
-            : cat // rewrite the rest
-        ),
-    }));
+  const changeCategorySelection = ((prevState: DisplayedCategory[], IdOfCatToChange: number): DisplayedCategory[] => {
+    //iterate over categories (cat) -> if cat.id === IdOfCatToChange -> change its boolean value
+    return prevState.map(cat =>
+      cat.id === IdOfCatToChange
+        ? { ...cat, display: !cat.display } // toggle only the matching category
+        : cat // keep the rest unchanged
+    );
   });
 
-  //dynamically calculate necessary values and update the UI:
+  //dynamically calculate necessary values and update the UI (this only runs on):
   useEffect(() => {
     async function fetchCategories() {
       try {
-        
+
         const quick = await getCategorySummary(); //load core data
-        setGroupedCategories(groupCategories(quick, groupedCategories));
+        setGroupedCategories(groupCategories(quick));
+        setDisplayedCategories( //set up which categories should be displayed on the chart
+          quick.map(cat => ({
+            id: cat.id,
+            display: true, // default value
+          }))
+        );
         setCoreReady(true); //update to no longer show "loading..."
 
         for (const cat of quick) {  //dynamically load additional data that takes longer to fetch from the API 
           try {
             const full = await getDifficultyCounts(cat);
-            setGroupedCategories(groupCategories(full, groupedCategories));
+            setGroupedCategories(groupCategories(full));
           } catch (e) { //If any errors are detected it is important to not break the function. At this point the core data is succesfully loaded.
             console.warn(`Second fetch failed for category ${cat.id}:`, e);
           }
@@ -81,7 +85,7 @@ const App: React.FC = () => {
   //TODO: check styles
   //TODO: add about
   return (
-    <div className={darkMode ? 'app dark' : 'app'}> 
+    <div className={darkMode ? 'app dark' : 'app'}>
       <Header />
       <div className="main-content">
         <Filters
@@ -90,15 +94,11 @@ const App: React.FC = () => {
           selectedLevels={selectedLevels}
           setSelectedLevels={setSelectedLevels}
           groupCategories={groupedCategories}
-          setGroupedCategories={setGroupedCategories}
+          setDisplayedCategories={setDisplayedCategories}
+          changeCategorySelection={changeCategorySelection}
+          displayedCategories={displayedCategories}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
-        />
-        <QuestionsChart
-          groupCategories={groupedCategories}
-          displayMode={displayMode}
-          selectedLevels={selectedLevels}
-          selectedCategories={selectedCategories}
         />
       </div>
     </div>
