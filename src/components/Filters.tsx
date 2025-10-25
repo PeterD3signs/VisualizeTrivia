@@ -35,26 +35,49 @@ const Filters: React.FC<Props> = ({
 
     return (
         <div className="filters">
-            <div className="filters-section">
-                <span>Mode:</span>
-                <button className="filters-button" onClick={() => setDisplayMode(displayMode === 'difficulty' ? 'acceptance' : 'difficulty')}>
-                    {displayMode === 'difficulty' ? 'Difficulty' : 'Acceptance'}
-                </button>
-            </div>
 
+            {/* visualize question difficulty or question acceptance status */}
+            <div className="dividing-line"></div>
+            <p><b>PLOT QUESTIONS BY:</b></p>
+            <div className="data-type-toggle">
+                <p className={`${displayMode === "acceptance" ? "toggle-p" : ""}`} >Acceptance</p>
+                <button className="toggle-button" onClick={() => setDisplayMode(displayMode === "difficulty" ? "acceptance" : "difficulty")}>
+                    <div className={`toggle-circle ${displayMode === "difficulty" ? "selected" : ""}`}></div>
+                </button>
+                <p className={`${displayMode === "difficulty" ? "toggle-p" : ""}`}>Difficulty</p>
+            </div>
+            <div className="dividing-line"></div>
+
+            {/* 'easy', 'medium', 'hard', 'all' / 'pending', 'verified', 'rejected', 'all'. */}
+            {displayMode === "difficulty" ?
+                <div>
+                    <p><b>DISPLAY DIFFICULTIES:</b></p>
+                </div>
+                :
+                <div>
+                    <p><b>DISPLAY ACCEPTANCE:</b></p>
+                </div>
+            }
             <div className="filters-section">
-                {['easy', 'medium', 'hard', 'all'].map(level => (
+                {(
+                    displayMode === "difficulty"
+                        ? ["easy", "medium", "hard", "all"]
+                        : ["pending", "verified", "rejected", "all"]
+                ).map(level => (
                     <label key={level} className="filters-checkbox-label">
+                        {level.charAt(0).toUpperCase() + level.slice(1)}
                         <input
                             type="checkbox"
                             checked={selectedLevels.includes(level)}
                             onChange={() => toggleLevel(level)}
                         />
-                        {level.charAt(0).toUpperCase() + level.slice(1)}
+
                     </label>
                 ))}
             </div>
+            <div className="dividing-line"></div>
 
+            {/* category selection */}
             <div className="filters-section">
                 {groupCategories.map(group => (
                     <div key={group.title} className="filters-group">
@@ -66,7 +89,7 @@ const Filters: React.FC<Props> = ({
 
                             return (
                                 <label key={cat.id} className="filters-checkbox-label">
-                                    <span>{cat.name} {cat.id}</span>
+                                    <span>{cat.name}</span>
                                     <input
                                         type="checkbox"
                                         checked={isChecked}
@@ -82,7 +105,9 @@ const Filters: React.FC<Props> = ({
                     </div>
                 ))}
             </div>
+            <div className="dividing-line"></div>
 
+            {/* dark mode */}
             <div className="filters-section dark-mode-toggle">
                 <span>Dark Mode</span>
                 <input type="checkbox" checked={darkMode} onChange={() => setDarkMode(!darkMode)} />

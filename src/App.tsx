@@ -10,7 +10,7 @@ const App: React.FC = () => {
   const [coreReady, setCoreReady] = useState(false);  //to see if loading of core API data is complete (see apiCall.ts)
   const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
 
-  const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('difficulty');  //should the chart show the question count devided by their difficulty or by their acceptance status
+  const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('acceptance');  //should the chart show the question count devided by their difficulty or by their acceptance status
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['easy', 'medium', 'hard', 'all']); //question difficulty / acceptance levels - alternative: 'pending', 'verified', 'rejected', 'all'.
   const [darkMode, setDarkMode] = useState(false); // TODO
 

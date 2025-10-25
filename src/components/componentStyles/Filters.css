@@ -1,49 +1,124 @@
 .filters {
-    width: 250px;
-    background-color: #e5e7eb; /* light gray daisyUI bg */
+    width: 19rem;
+    background-color: #e5e7eb;
+    /* light gray daisyUI bg */
     padding: 12px;
-    border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-  }
-  
-  .filters-section {
+    padding-top: 1.5rem;
+}
+
+.filters-section {
     display: flex;
     flex-direction: column;
     gap: 6px;
-  }
-  
-  .filters-button {
+    margin-left: 0.15rem;
+}
+
+.filters-button {
     padding: 4px 8px;
     border-radius: 6px;
     border: none;
     background-color: #3b82f6;
     color: white;
     cursor: pointer;
-  }
-  
-  .filters-button:hover {
-    background-color: #2563eb;
-  }
-  
-  .filters-checkbox-label {
+}
+
+.filters-checkbox-label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .filters-group {
+}
+
+.filters-group {
     border-left: 2px solid #9ca3af;
     padding-left: 6px;
     margin-bottom: 6px;
-  }
-  
-  .filters-group-title {
+}
+
+.filters-group-title {
     font-weight: bold;
     margin-bottom: 4px;
-  }
-  
-  .dark-mode-toggle {
+}
+
+.dark-mode-toggle {
     margin-top: auto;
-  }
+}
+
+.toggle-container {
+    display: flex;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.toggle-option {
+    padding: 0.5rem 1rem;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.2s, color 0.2s;
+    user-select: none;
+}
+
+.toggle-option.selected {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+/* toggle: */
+.data-type-toggle {
+    display: flex;
+    align-items: center;
+
+}
+.toggle-button {
+    cursor: pointer;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-primary);
+    color: var(--color-text);
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 3rem;
+    height: 1.7rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position:relative;
+}
+.toggle-circle {
+    position: absolute;
+    top: 0.17rem;
+    left: 0.17rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: var(--color-primary);
+    transition: left 0.2s ease;
+    user-select: none;
+    border-radius: 1rem;
+}
+.toggle-circle.selected {
+    left: 1.55rem;
+}
+.toggle-p{
+    color: var(--color-primary);
+    font-weight: bold;
+}
+p {
+    margin: 0;
+    padding: 0;
+    padding-left: 0.15rem;
+    padding-right: 0.15rem;
+}
+
+/* dividing line: */
+.dividing-line {
+    height: 1px;
+    width: 17rem;
+    background-color: var(--color-text);
+}
