@@ -28,22 +28,28 @@ Next there should be four check boxes - one for easy/approved questions, one for
 To that add one check box for “all”. If the user deselects one, those columns won't appear on the chart (checkboxes should come pre clicked at start).
 At last, there will be categories displayed inside those filters.
 I just want a simple dynamic array of categories with check-boxes next to them.
-The categories are sorted in a var called “groupCategories” of type: 
+The categories are sorted in a var called “groupCategories” of type:
+```ts
 {title: string;
-list: Category[]},
+list: Category[]}
+```
 where “Category” is an Interface of the following structure:
+```ts
 interface Category extends CategoryAcceptanceCount {
 name: string | null;
 total_easy_question_count: number | null;
 total_medium_question_count: number | null;
-total_hard_question_count: number | null;},
+total_hard_question_count: number | null;}
+```
 and “CategoryAcceptanceCount” is an Interface that looks like this:
+```ts
 export interface CategoryAcceptanceCount {
 id: number;
 total_num_of_questions: number | null;
 total_num_of_pending_questions: number | null;
 total_num_of_verified_questions: number | null;
 total_num_of_rejected_questions: number | null;}
+```
 I want those categories in filters to be displayed one below another with the checkboxes on the right.
 On the left, some curly brackets should encapsulate those categories based on the given group (marked with the title of this group).
 
