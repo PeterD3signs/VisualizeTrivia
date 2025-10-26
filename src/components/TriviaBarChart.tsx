@@ -17,6 +17,7 @@ interface Props {
   displayedCategories: Set<number>; // updated to Set
   displayMode: "difficulty" | "acceptance";
   selectedLevels: string[];
+  barHeight: number;
 }
 
 const TriviaGroupedBarChart: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
   displayedCategories,
   displayMode,
   selectedLevels,
+  barHeight
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -73,7 +75,6 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
 
   const visibleLevels = levels.filter((l) => selectedLevels.includes(l));
 
-  const barHeight = 15; // height per category
   const gapBetweenCategories = 20;
   const chartHeight = useMemo(() => {return data.length * visibleLevels.length * barHeight + data.length * gapBetweenCategories;}, [data, barHeight, gapBetweenCategories, visibleLevels]);
 

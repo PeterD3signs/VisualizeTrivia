@@ -8,10 +8,12 @@ interface Props {
     groupedCategories: GroupedCategory[];
     displayedCategories: Set<number>;
     darkMode: boolean;
+    barHeight: number;
     setDisplayMode: (mode: 'difficulty' | 'acceptance') => void;
     setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
     setDisplayedCategories: React.Dispatch<React.SetStateAction<Set<number>>>;
     setDarkMode: (value: boolean) => void;
+    setBarHeight: (value: number) => void;
 }
 
 const Filters: React.FC<Props> = ({
@@ -23,7 +25,9 @@ const Filters: React.FC<Props> = ({
     setDisplayedCategories,
     displayedCategories,
     darkMode,
+    barHeight,
     setDarkMode,
+    setBarHeight
 }) => {
     const toggleLevel = (level: string) => {    //add or delete a given difficulty level.
         setSelectedLevels(prev =>
@@ -181,18 +185,34 @@ const Filters: React.FC<Props> = ({
             </div>
             <div className="dividing-line"></div>
 
-            {/* Dark mode + refresh section */}
+            {/* Dark mode + refresh section +  */}
             <p><b>MISC:</b></p>
             <div className="misc-controls">
+                {/* BarHeightSlider */}
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                    <label htmlFor="barHeightSlider">Bar Height</label>
+                    <input
+                        id="barHeightSlider"
+                        type="range"
+                        min={5}
+                        max={50}
+                        value={barHeight}
+                        onChange={(e) => setBarHeight(Number(e.target.value))}
+                    />
+                </div>
+
                 {/* Dark Mode Toggle */}
+                
                 <div className="data-type-toggle-dark-mode">
-                    <span className={`${darkMode ? "primary-text-color" : ""}`}>Dark Mode</span>
+                    <span>Dark Mode</span>
                     <div className="data-type-toggle">
                         <button className="toggle-button" onClick={() => setDarkMode(!darkMode)}>
                             <div className={`toggle-circle ${darkMode ? "selected" : ""}`}></div>
                         </button>
                     </div>
                 </div>
+
+                <div className="dividing-line additional-top-margin"></div>
 
                 {/* Refresh Data Button */}
                 <div className="misc-item refresh-data">

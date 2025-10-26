@@ -11,10 +11,10 @@ const App: React.FC = () => {
   const [displayedCategories, setDisplayedCategories] = useState<Set<number>>(new Set());  //should this category be displayed on the graph?
   const [coreReady, setCoreReady] = useState(false);  //to see if loading of core API data is complete (see apiCall.ts)
   const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
-
+  const [barHeight, setBarHeight] = useState(15); // Default height
   const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('acceptance');  //should the chart show the question count devided by their difficulty or by their acceptance status
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['pending', 'verified', 'rejected', 'sum']); //question difficulty / acceptance levels
-  const [darkMode, setDarkMode] = useState(false); // TODO
+  const [darkMode, setDarkMode] = useState(false);
 
   // Group the categories based on their type: (accepts all categories in one array; each category is eihther "General" or has a prefix with its type)
   const groupCategories = (categories: Category[]): GroupedCategory[] => {
@@ -82,13 +82,9 @@ const App: React.FC = () => {
     localStorage.setItem("theme", theme);
   }, [darkMode]);
 
-  //TODO: React to filter changes
-
-  if (error) return <div className="error">Error: {error}</div>;  //TODO: make this display fallback data
+  if (error) return <div className="error">Breaking error: {error}</div>;
   if (!coreReady) return <div className="loading">Loading...</div>;   //TODO: make this be part of the chart only - some parts of the UI can be displayed ealier to make the user feel like things are already happenign
 
-  //TODO: check styles
-  //TODO: add about
   return (
     <div>
       <Header />
@@ -103,12 +99,15 @@ const App: React.FC = () => {
           displayedCategories={displayedCategories}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
+          setBarHeight={setBarHeight}
+          barHeight={barHeight}
         />
         <TriviaGroupedBarChart
           groupedCategories={groupedCategories}
           displayedCategories={displayedCategories}
           displayMode={displayMode}
           selectedLevels={selectedLevels}
+          barHeight={barHeight}
         />
       </div>
     </div>

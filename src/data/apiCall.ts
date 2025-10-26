@@ -107,7 +107,7 @@ export async function getCategorySummary(): Promise<Category[]> {
     try {
         names = await fetchCategoryNames();
         acceptanceCount = await fetchCategoryCounts();
-    } catch (e) {   // {TODO}
+    } catch (e) {
         console.error(e);
     }
 
