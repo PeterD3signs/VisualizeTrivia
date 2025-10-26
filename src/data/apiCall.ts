@@ -25,7 +25,6 @@
 import type { Category, CategoryName, CategoryAcceptanceCount } from "./categories";
 
 // Counts cache (to not run calls all the time)
-let globalCountsCache: Category[] = [];
 let maxId: number = 0;
 
 // Fetch all category names
@@ -116,7 +115,7 @@ export async function getCategorySummary(): Promise<Category[]> {
     names.push({ id: maxId, name: "All" });
 
     // Populating global counts
-    globalCountsCache = names.map((nItem: CategoryName) => {
+    return names.map((nItem: CategoryName) => {
         const aItem = acceptanceCount.find((a) => nItem.id === a.id);
         return {
             id: nItem.id,
@@ -129,8 +128,6 @@ export async function getCategorySummary(): Promise<Category[]> {
             total_hard_question_count: 0
         }
     })
-
-    return globalCountsCache;
 }
 
 // Fetch adifficulty counts
