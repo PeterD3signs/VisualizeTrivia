@@ -79,7 +79,6 @@ async function fetchCategoryCounts(): Promise<CategoryAcceptanceCount[]> {
     const categoryArray: CategoryAcceptanceCount[] = Object.entries(data.categories).map(
         ([id, c]) => ({
             id: Number(id),
-            total_num_of_questions: c.total_num_of_questions,
             total_num_of_pending_questions: c.total_num_of_pending_questions,
             total_num_of_verified_questions: c.total_num_of_verified_questions,
             total_num_of_rejected_questions: c.total_num_of_rejected_questions,
@@ -90,7 +89,6 @@ async function fetchCategoryCounts(): Promise<CategoryAcceptanceCount[]> {
     maxId = Math.max(...categoryArray.map(c => c.id)) + 1;
     categoryArray.push({
         id: maxId,
-        total_num_of_questions: data.overall.total_num_of_questions,
         total_num_of_pending_questions: data.overall.total_num_of_pending_questions,
         total_num_of_verified_questions: data.overall.total_num_of_verified_questions,
         total_num_of_rejected_questions: data.overall.total_num_of_rejected_questions,
@@ -123,7 +121,6 @@ export async function getCategorySummary(): Promise<Category[]> {
         return {
             id: nItem.id,
             name: nItem.name ?? "",
-            total_num_of_questions: aItem?.total_num_of_questions ?? 0,
             total_num_of_pending_questions: aItem?.total_num_of_pending_questions ?? 0,
             total_num_of_rejected_questions: aItem?.total_num_of_rejected_questions ?? 0,
             total_num_of_verified_questions: aItem?.total_num_of_verified_questions ?? 0,

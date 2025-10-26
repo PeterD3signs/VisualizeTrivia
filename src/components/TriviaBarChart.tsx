@@ -53,7 +53,7 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
           pending: c.total_num_of_pending_questions ?? 0,
           verified: c.total_num_of_verified_questions ?? 0,
           rejected: c.total_num_of_rejected_questions ?? 0,
-          sum: c.total_num_of_questions ?? 0,
+          sum: displayMode === "acceptance" ? (c.total_num_of_pending_questions ?? 0) + (c.total_num_of_verified_questions ?? 0) + (c.total_num_of_rejected_questions ?? 0) : (c.total_num_of_verified_questions ?? 0),
           easy: c.total_easy_question_count ?? 0,
           medium: c.total_medium_question_count ?? 0,
           hard: c.total_hard_question_count ?? 0,
@@ -62,7 +62,7 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
     }
 
     return rows;
-  }, [groupedCategories, displayedCategories]);
+  }, [groupedCategories, displayedCategories, displayMode]);
 
   // Determine which bars to display
   const levels =

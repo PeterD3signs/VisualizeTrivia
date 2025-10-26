@@ -1,7 +1,6 @@
 //Interfaces:
 export interface CategoryAcceptanceCount {
     id: number;
-    total_num_of_questions: number | null;
     total_num_of_pending_questions: number | null;
     total_num_of_verified_questions: number | null;
     total_num_of_rejected_questions: number | null;
@@ -32,7 +31,6 @@ export const fallbackCategories: { title: string; list: Category[] }[] = [   //T
             {
                 id: 1,
                 name: 'Physics',
-                total_num_of_questions: 120,
                 total_num_of_pending_questions: 20,
                 total_num_of_verified_questions: 80,
                 total_num_of_rejected_questions: 20,
@@ -43,7 +41,6 @@ export const fallbackCategories: { title: string; list: Category[] }[] = [   //T
             {
                 id: 2,
                 name: 'Chemistry',
-                total_num_of_questions: 100,
                 total_num_of_pending_questions: 10,
                 total_num_of_verified_questions: 70,
                 total_num_of_rejected_questions: 20,
@@ -59,7 +56,6 @@ export const fallbackCategories: { title: string; list: Category[] }[] = [   //T
             {
                 id: 3,
                 name: 'Ancient',
-                total_num_of_questions: 80,
                 total_num_of_pending_questions: 10,
                 total_num_of_verified_questions: 60,
                 total_num_of_rejected_questions: 10,
