@@ -44,7 +44,7 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
             <BarChart
                 layout="vertical"
                 data={data}
-                margin={{ top: 20, right: 40, left: 30, bottom: 60 }}
+                margin={{ top: 20, right: 40, left: 30, bottom: 80 }}
                 barGap={0}
                 barCategoryGap={gapBetweenCategories}
             >

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Filters from './components/Filters';
+import Footer from './components/Footer';
 import { getCategorySummary, modifyDifficultyCounts } from './data/apiCall';
 import type { Category, GroupedCategory } from './data/categories';
 import TriviaCharts from './components/TriviaCharts';
@@ -116,7 +117,9 @@ const App: React.FC = () => {
           :
           <LoadingSpinner />
         }
+        
       </div>
+      <Footer />
     </div>
   );
 };
