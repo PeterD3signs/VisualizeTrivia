@@ -18,6 +18,9 @@ const App: React.FC = () => {
   const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('acceptance');  //should the chart show the question count devided by their difficulty or by their acceptance status
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['pending', 'verified', 'rejected', 'sum']); //question difficulty / acceptance levels
   const [darkMode, setDarkMode] = useState(false);
+  const [winWidth, setWinWidth] = useState(window.innerWidth);  //window width
+
+  const mobileWidth = 800;
 
   // Group the categories based on their type: (accepts all categories in one array; each category is eihther "General" or has a prefix with its type)
   const groupCategories = (categories: Category[]): GroupedCategory[] => {
@@ -72,10 +75,15 @@ const App: React.FC = () => {
         setError(String(e));
       }
     }
-
     fetchCategories();
+
     const saved = localStorage.getItem("theme");
     if (saved === "dark") setDarkMode(true);
+    
+    const handleResize = () => setWinWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+
   }, []);
 
   useEffect(() => {
@@ -88,9 +96,11 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Header />
-      <div className="main-content">
-        <Filters
+      <Header 
+        width={winWidth}
+        mobileWidth={mobileWidth}
+      />
+      {winWidth < mobileWidth && <Filters
           displayMode={displayMode}
           setDisplayMode={setDisplayMode}
           selectedLevels={selectedLevels}
@@ -104,7 +114,27 @@ const App: React.FC = () => {
           barHeight={barHeight}
           pieChart={pieChart}
           setPieChart={setPieChart}
-        />
+          winWidth={winWidth}
+          mobileWidth={mobileWidth}
+        />}
+      <div className="main-content">
+        {winWidth >= mobileWidth && <Filters
+          displayMode={displayMode}
+          setDisplayMode={setDisplayMode}
+          selectedLevels={selectedLevels}
+          setSelectedLevels={setSelectedLevels}
+          groupedCategories={groupedCategories}
+          setDisplayedCategories={setDisplayedCategories}
+          displayedCategories={displayedCategories}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+          setBarHeight={setBarHeight}
+          barHeight={barHeight}
+          pieChart={pieChart}
+          setPieChart={setPieChart}
+          winWidth={winWidth}
+          mobileWidth={mobileWidth}
+        />}
         {coreReady ?
           <TriviaCharts
             groupedCategories={groupedCategories}
@@ -119,7 +149,10 @@ const App: React.FC = () => {
         }
         
       </div>
-      <Footer />
+      <Footer 
+        width={winWidth}
+        mobileWidth={mobileWidth}
+      />
     </div>
   );
 };

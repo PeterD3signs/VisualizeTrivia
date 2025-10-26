@@ -1,11 +1,15 @@
 import React from 'react';
 import './componentStyles/Footer.css';
 
-const Header: React.FC = () => {
+interface Props {
+    width: number;
+    mobileWidth: number;
+}
+const Header: React.FC<Props> = ({width, mobileWidth}) => {
     return (
         <footer className="footer">
             <div className="footer-start">
-                <div className="color-square"></div>
+                {width > mobileWidth ? <div className="color-square"></div> : <div className="color-square short-color-square"></div>}
                 <div className="link-container">
                     <p className="title">Socials</p>
                     <a className="link" href="https://github.com/PeterD3signs/" target="_blank" rel="noopener noreferrer">

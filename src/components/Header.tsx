@@ -1,11 +1,15 @@
 import React from 'react';
 import './componentStyles/Header.css';
 
-const Header: React.FC = () => {
+interface Props {
+    width: number;
+    mobileWidth: number;
+}
+const Header: React.FC<Props> = ({width, mobileWidth}) => {
     return (
         <header className="header">
             <div className="header-start">
-                <div className="color-square"></div>
+                {width > mobileWidth && <div className="color-square"></div>}
                 <img src="/logo.png" className="app-logo" />
                 <h1 className="header-title">VisualizeTrivia</h1>
             </div>

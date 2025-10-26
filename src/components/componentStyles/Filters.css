@@ -10,7 +10,7 @@
     margin: 0;
     border: 0;
     box-sizing: border-box;
-    flex: 0 0 auto;
+    flex: 1
 }
 
 .filters-section {
@@ -235,4 +235,33 @@ p {
 
 input[type="range"] {
     accent-color: var(--color-primary);
-  }
+}
+
+.filters-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    align-items: top;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    
+}
+
+.filters-left {
+    max-width: 21rem;
+    padding-right: 2rem;
+}
+
+.filters-right {
+    padding-left: 2rem;
+}
+
+.filters-bottom-border {
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.filters-right-border {
+    border-right: 2px solid var(--color-primary);
+}
