@@ -200,7 +200,7 @@ const Filters: React.FC<Props> = ({
             </div>
             <div className="dividing-line"></div>
 
-            {/* Dark mode + refresh section +  */}
+            {/* Misc */}
             <p><b>MISC:</b></p>
             <div className="misc-controls">
                 {/* BarHeightSlider */}
@@ -217,7 +217,7 @@ const Filters: React.FC<Props> = ({
                 </div>
 
                 {/* Dark Mode Toggle */}
-                
+
                 <div className="data-type-toggle-dark-mode">
                     <span>Dark Mode</span>
                     <div className="data-type-toggle">
@@ -226,18 +226,17 @@ const Filters: React.FC<Props> = ({
                         </button>
                     </div>
                 </div>
+            </div>
+            <div className="dividing-line"></div>
 
-                <div className="dividing-line additional-top-margin"></div>
-
-                {/* Refresh Data Button */}
-                <div className="misc-item refresh-data">
-                    <button
-                        className="filters-text-button"
-                        onClick={() => window.location.reload()}
-                    >
-                        Refresh Data
-                    </button>
-                </div>
+            {/* Refresh Data Button */}
+            <div className="refresh-data">
+                <button
+                    className="filters-text-button"
+                    onClick={() => window.location.reload()}
+                >
+                    Refresh Data
+                </button>
             </div>
             <div className="dividing-line"></div>
         </div>
