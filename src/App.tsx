@@ -4,6 +4,7 @@ import Filters from './components/Filters';
 import { getCategorySummary, modifyDifficultyCounts } from './data/apiCall';
 import type { Category, GroupedCategory } from './data/categories';
 import TriviaGroupedBarChart from './components/TriviaBarChart';
+import LoadingSpinner from './components/LoadingSpinner';
 import "./App.css"
 
 const App: React.FC = () => {
@@ -39,7 +40,7 @@ const App: React.FC = () => {
     //return the Object as a GroupedCategory array:
     return Object.entries(grouped).map(([title, list]) => ({ title, list }));
   };
-  
+
 
   //dynamically calculate necessary values and update the UI (this only runs on):
   useEffect(() => {
@@ -83,11 +84,11 @@ const App: React.FC = () => {
   }, [darkMode]);
 
   if (error) return <div className="error">Breaking error: {error}</div>;
-  if (!coreReady) return <div className="loading">Loading...</div>;   //TODO: make this be part of the chart only - some parts of the UI can be displayed ealier to make the user feel like things are already happenign
 
   return (
     <div>
       <Header />
+
       <div className="main-content">
         <Filters
           displayMode={displayMode}
@@ -102,13 +103,17 @@ const App: React.FC = () => {
           setBarHeight={setBarHeight}
           barHeight={barHeight}
         />
-        <TriviaGroupedBarChart
-          groupedCategories={groupedCategories}
-          displayedCategories={displayedCategories}
-          displayMode={displayMode}
-          selectedLevels={selectedLevels}
-          barHeight={barHeight}
-        />
+        {coreReady ?
+          <TriviaGroupedBarChart
+            groupedCategories={groupedCategories}
+            displayedCategories={displayedCategories}
+            displayMode={displayMode}
+            selectedLevels={selectedLevels}
+            barHeight={barHeight}
+          />
+          :
+          <LoadingSpinner />
+        }
       </div>
     </div>
   );
