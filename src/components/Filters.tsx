@@ -204,6 +204,7 @@ const Filters: React.FC<Props> = ({
                     </button>
                 </div>
             </div>
+            <div className="dividing-line"></div>
         </div>
     );
 };

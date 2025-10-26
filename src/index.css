@@ -6,6 +6,7 @@
   --color-accent: #9c34b9;
   --color-second-bg: #e5e7eb;
   --color-title: #e3aaff;
+  --color-sum-bar: #480f57; 
 }
 
 [data-theme="dark"] {
@@ -15,6 +16,7 @@
   --color-accent: #4e5d8f;
   --color-second-bg: #2a364c;
   --color-title: #eef7ff;
+  --color-sum-bar: #255864; 
 }
 
 *,

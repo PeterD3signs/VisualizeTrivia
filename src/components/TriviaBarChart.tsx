@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from "react";
+import React, { useMemo, useRef} from "react";
 import {
   ResponsiveContainer,
   BarChart,
@@ -7,7 +7,7 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-  Legend,
+  Legend
 } from "recharts";
 import "./componentStyles/TriviaBarChart.css";
 import type { GroupedCategory } from "../data/categories";
@@ -64,6 +64,7 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
     return rows;
   }, [groupedCategories, displayedCategories, displayMode]);
 
+
   // Determine which bars to display
   const levels =
     displayMode === "acceptance"
@@ -72,64 +73,31 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
 
   const visibleLevels = levels.filter((l) => selectedLevels.includes(l));
 
+  const barHeight = 15; // height per category
+  const gapBetweenCategories = 20;
+  const chartHeight = useMemo(() => {return data.length * visibleLevels.length * barHeight + data.length * gapBetweenCategories;}, [data, barHeight, gapBetweenCategories, visibleLevels]);
+
   const colorMap: Record<string, string> = {
     pending: "var(--color-accent)",
     verified: "var(--color-primary)",
     rejected: "var(--color-title)",
-    sum: "var(--color-second-bg)",
+    sum: "var(--color-sum-bar)",
     easy: "var(--color-accent)",
     medium: "var(--color-primary)",
     hard: "var(--color-title)",
   };
 
-  // Draw curly brackets for groups
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    // Remove old brackets
-    const oldBrackets = container.querySelectorAll(".group-bracket");
-    oldBrackets.forEach((el) => el.remove());
-
-    const chartEl = container.querySelector(".recharts-wrapper");
-    if (!chartEl) return;
-
-    let yOffset = 40;
-    groupedCategories.forEach((group) => {
-      const groupList = group.list.filter((c) => displayedCategories.has(c.id));
-      if (groupList.length === 0) return;
-
-      const bracket = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      bracket.setAttribute("class", "group-bracket");
-      bracket.style.position = "absolute";
-      bracket.style.left = "0px";
-      bracket.style.top = `${yOffset}px`;
-      bracket.style.width = "24px";
-      bracket.style.height = `${groupList.length * 40}px`;
-      bracket.style.overflow = "visible";
-
-      bracket.innerHTML = `
-        <path d="M20 0 q-10 10 -10 20 v${groupList.length * 40 - 40} q0 10 10 20" 
-          fill="none" stroke="var(--color-text)" stroke-width="2" />
-        <text x="0" y="${(groupList.length * 40) / 2}" 
-          fill="var(--color-text)" font-size="12" 
-          text-anchor="start" dominant-baseline="middle">${group.title}</text>
-      `;
-
-      container.appendChild(bracket);
-      yOffset += groupList.length * 40;
-    });
-  }, [groupedCategories, displayedCategories]);
-
   return (
     <div className="trivia-bar-chart" ref={containerRef}>
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={chartHeight}>
         <BarChart
           layout="vertical"
           data={data}
-          margin={{ top: 30, right: 40, left: 60, bottom: 30 }}
+          margin={{ top: 30, right: 40, left: 30, bottom: 30 }}
+          barGap={0}
+          barCategoryGap={gapBetweenCategories}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--color-second-bg)" />
+          <CartesianGrid strokeDasharray="4 4" stroke="var(--color-second-bg)" />
           <XAxis
             type="number"
             tick={{ fill: "var(--color-text)" }}
@@ -138,12 +106,13 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
               position: "bottom",
               fill: "var(--color-text)",
             }}
+            
           />
           <YAxis
             dataKey="categoryName"
             type="category"
             tick={{ fill: "var(--color-text)" }}
-            width={150}
+            width={110}
           />
           <Tooltip
             contentStyle={{
@@ -152,14 +121,17 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
               border: "1px solid var(--color-second-bg)",
             }}
           />
-          <Legend />
+          <Legend
+          align="right"
+          verticalAlign="top"
+
+          />
           {visibleLevels.map((lvl) => (
             <Bar
               key={lvl}
               dataKey={lvl}
               fill={colorMap[lvl]}
-              barSize={16}
-              radius={[3, 3, 3, 3]}
+              barSize={barHeight}
             />
           ))}
         </BarChart>
