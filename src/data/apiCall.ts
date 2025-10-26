@@ -126,7 +126,7 @@ export async function getCategorySummary(): Promise<Category[]> {
             total_num_of_questions: aItem?.total_num_of_questions ?? 0,
             total_num_of_pending_questions: aItem?.total_num_of_pending_questions ?? 0,
             total_num_of_rejected_questions: aItem?.total_num_of_rejected_questions ?? 0,
-            total_num_of_verified_questions: aItem?.total_num_of_rejected_questions ?? 0,
+            total_num_of_verified_questions: aItem?.total_num_of_verified_questions ?? 0,
             total_easy_question_count: 0,
             total_medium_question_count: 0,
             total_hard_question_count: 0
