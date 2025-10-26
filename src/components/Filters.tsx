@@ -79,8 +79,8 @@ const Filters: React.FC<Props> = ({
             <div className="filters-section">
                 {(
                     displayMode === "difficulty"
-                        ? ["easy", "medium", "hard", "sum"]
-                        : ["pending", "verified", "rejected", "sum"]
+                        ? (pieChart ? ["easy", "medium", "hard"] : ["easy", "medium", "hard", "sum"])
+                        : (pieChart ? ["pending", "verified", "rejected"] : ["pending", "verified", "rejected", "sum"])
                 ).map(level => (
                     <label key={level} className="filters-checkbox-label">
                         {level.charAt(0).toUpperCase() + level.slice(1)}

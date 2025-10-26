@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import BarChartComponent from "./BarChartComponent";
+import PieChartComponent from "./PieChartComponent";
 import "./componentStyles/TriviaBarChart.css";
 import type { GroupedCategory } from "../data/categories";
-//import BarChartComponent from "./BarChart";
 
 interface Props {
     groupedCategories: GroupedCategory[];
@@ -84,14 +84,11 @@ const TriviaCharts: React.FC<Props> = ({
     if (pieChart) {
         return (
             <div className="trivia-bar-chart">
-                <h2>Percantage share of questions per selected categories:</h2>
-                <BarChartComponent
+                <h2>Share of questions in selected categories:</h2>
+                <PieChartComponent
                     data={data}
-                    chartHeight={chartHeight}
-                    gapBetweenCategories={gapBetweenCategories}
-                    barHeight={barHeight}
-                    visibleLevels={visibleLevels}
                     colorMap={colorMap}
+                    visibleLevels={visibleLevels}
                 />
             </div>);
     } else {

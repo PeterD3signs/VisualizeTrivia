@@ -48,7 +48,7 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
                 barGap={0}
                 barCategoryGap={gapBetweenCategories}
             >
-                <CartesianGrid strokeDasharray="4 4" stroke="var(--color-second-bg)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-second-bg)" />
                 <XAxis
                     type="number"
                     tick={{ fill: "var(--color-text)" }}
