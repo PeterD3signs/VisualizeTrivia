@@ -124,7 +124,7 @@ const App: React.FC = () => {
       {mobileMode &&
         <div className="extend-button-wrapper">
           <button className="extend-filters-button" onClick={() => setFiltersExtended(!filtersExtended)}>
-            {filtersExtended ? "△ collapse filters △" : "▽ extend filters ▽"}
+            {filtersExtended ? "△ hide filters △" : "▽ show filters ▽"}
           </button>
         </div>}
       <div className="main-content">

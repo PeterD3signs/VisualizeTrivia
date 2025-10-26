@@ -61,3 +61,83 @@ This is all in terms of the content, now in terms of style:
 I want to use some pre-determined colours for primary and accent elements - think daisyUI for TailwindCSS
 (To be clear, I don't use TailwindCSS in my project, this is just an example).
 For the rest, just apply some styles and I will ask you to correct them if necessary.
+
+## Prompt 2 - Skeleton for components that use the already implemented API logic and data structures:
+Create me a graph with the use of the Recharts library (React, ts, hosted on GH Pages,NO Tailwind, so css in a separate file),
+that will visualise data about trivia questions.
+On the horizontal axis I want to see the the amount of questions in each category
+and on the vertical axles I want to see the categories themselves.
+The data is stored in a structure of type:
+```ts
+export type GroupedCategory = {
+    title: string;
+    list: Category[];
+};
+```
+where Category is an Interface that looks like:
+```ts
+export interface Category extends CategoryAcceptanceCount { 
+    name: string | null;
+    total_easy_question_count: number | null;
+    total_medium_question_count: number | null;
+    total_hard_question_count: number | null;
+};
+```
+and CategoryAcceptanceCount looks like this:
+```ts
+export interface CategoryAcceptanceCount {
+    id: number;
+    total_num_of_questions: number | null;
+    total_num_of_pending_questions: number | null;
+    total_num_of_verified_questions: number | null;
+    total_num_of_rejected_questions: number | null;
+}
+```
+User can see either the acceptance status of the question or the difficulty of a question based on:
+```ts
+const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('acceptance');
+```
+For both modes, user can select or deselect whether to show each difficulty/acceptance with:
+```ts
+const [selectedLevels, setSelectedLevels] = useState<string[]>(['pending', 'verified', 'rejected', 'sum']);
+```
+If 'selectedLevels' incudes a given level, you should show it. For difficulty the levels are just 'easy', 'medium', 'hard' and 'sum'.
+Each category should have between 0 and 4 bars, depending on which of the following difficulty/acceptance is selected to be displayed.Last important detail is what categories should be shown.
+This data structure contains the ids of all the categories that should be shown:
+```ts
+export type DisplayedCategory = { 
+    id: number;
+    display: boolean;
+}
+
+// SIDE NOTE: I later went on to change this to a Set<number> which remembers the IDs of categories that are to be shown.
+```
+ All logic is already implemented and works. I just need a reactive bar graph based on the provided data structures.
+ Make the graph respond to the following colors:
+```css
+ :root { /* Light mode colors */
+    --color-bg: #f9f9f9;
+    --color-text: #111111;
+    --color-primary: #621776;
+    --color-accent: #9c34b9;
+    --color-second-bg: #e5e7eb;
+    --color-title: #e3aaff;
+}
+    
+[data-theme="dark"] {
+     --color-bg: #1f2937;
+     --color-text: #eef7ff;
+     --color-primary: #699cb9;
+     --color-accent: #4e5d8f;
+     --color-second-bg: #2a364c;
+     --color-title: #eef7ff;
+}
+```
+Data should be displayed per each category, and, on the left of the categories, there should be 
+a curly bracket that visually encapsulates the categories into one group.
+The group categories themselves do not need to be shown on the graph.
+Also, all data structures and types together with the main app are already defined -
+I only need a component which I can add to my main app.
+
+## The rest:
+Other prompts were rather minimal or did not include any specific data. I made sure to read and modify (if needed) every component that was produced by AI.
