@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Filters from './components/Filters';
-import { getCategorySummary, getDifficultyCounts } from './data/apiCall';
+import { getCategorySummary, modifyDifficultyCounts } from './data/apiCall';
 import type { Category, GroupedCategory } from './data/categories';
 import TriviaGroupedBarChart from './components/TriviaBarChart';
 import "./App.css"
@@ -40,6 +40,7 @@ const App: React.FC = () => {
     return Object.entries(grouped).map(([title, list]) => ({ title, list }));
   };
   
+
   //dynamically calculate necessary values and update the UI (this only runs on):
   useEffect(() => {
     async function fetchCategories() {
@@ -52,8 +53,15 @@ const App: React.FC = () => {
 
         for (const cat of quick.slice(0, -1)) {  //dynamically load additional data that takes longer to fetch from the API (categorie "ALL" excluded)
           try {
-            const full = await getDifficultyCounts(cat);
-            setGroupedCategories(groupCategories(full));
+            const updatedCounts = await modifyDifficultyCounts(cat);
+            setGroupedCategories(prev =>
+              prev.map(group => ({
+                ...group,
+                list: group.list.map(c =>
+                  c.id === cat.id ? { ...c, ...updatedCounts } : c
+                ),
+              }))
+            );
           } catch (e) { //If any errors are detected it is important to not break the function. At this point the core data is succesfully loaded.
             console.warn(`Second fetch failed for category ${cat.id}:`, e);
           }

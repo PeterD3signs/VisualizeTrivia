@@ -6,11 +6,14 @@ export interface CategoryAcceptanceCount {
     total_num_of_rejected_questions: number | null;
 }
 
-export interface Category extends CategoryAcceptanceCount {
-    name: string | null;
+export interface AcceptanceCount {
     total_easy_question_count: number | null;
     total_medium_question_count: number | null;
     total_hard_question_count: number | null;
+}
+
+export interface Category extends CategoryAcceptanceCount, AcceptanceCount {
+    name: string | null;
 }
 
 export interface CategoryName {

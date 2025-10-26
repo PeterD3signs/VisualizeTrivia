@@ -133,14 +133,15 @@ export async function getCategorySummary(): Promise<Category[]> {
     return globalCountsCache;
 }
 
-// Fetch adifficulty counts [based on IDs gathered with "fetchCategoryCounts()"]
-export async function getDifficultyCounts(cat: Category): Promise<Category[]> {
+// Fetch adifficulty counts
+export async function modifyDifficultyCounts(cat: Category): Promise<Partial<Category>> {
 
     const adr = `https://opentdb.com/api_count.php?category=${cat.id}`;
     try {
 
         let res: Response | null = null;
         let attempts = 0;
+
 
         while (attempts < 5) { // max 5 retries
             attempts++;
@@ -165,15 +166,22 @@ export async function getDifficultyCounts(cat: Category): Promise<Category[]> {
 
         if (res) {
             const data = await res.json();
-            cat.total_easy_question_count = Number(data?.category_question_count?.total_easy_question_count ?? 0);
-            cat.total_medium_question_count = Number(data?.category_question_count?.total_medium_question_count ?? 0);
-            cat.total_hard_question_count = Number(data?.category_question_count?.total_hard_question_count ?? 0);
+
+            return {
+                total_easy_question_count: Number(data?.category_question_count?.total_easy_question_count ?? 0),
+                total_medium_question_count: Number(data?.category_question_count?.total_medium_question_count ?? 0),
+                total_hard_question_count: Number(data?.category_question_count?.total_hard_question_count ?? 0),
+            };
         }
 
     } catch (err) {
         console.warn(`Failed to update category ${cat.id}:`, err);
     }
 
-    return globalCountsCache;
+    return {
+        total_easy_question_count: 0,
+        total_medium_question_count: 0,
+        total_hard_question_count: 0,
+    };
 
 }
