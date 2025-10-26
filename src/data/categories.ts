@@ -25,3 +25,4 @@ export type GroupedCategory = {
     title: string;
     list: Category[];
 };
+

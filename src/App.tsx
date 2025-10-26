@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Filters from './components/Filters';
 import { getCategorySummary, modifyDifficultyCounts } from './data/apiCall';
 import type { Category, GroupedCategory } from './data/categories';
-import TriviaGroupedBarChart from './components/TriviaBarChart';
+import TriviaCharts from './components/TriviaCharts';
 import LoadingSpinner from './components/LoadingSpinner';
 import "./App.css"
 
@@ -88,7 +88,6 @@ const App: React.FC = () => {
   return (
     <div>
       <Header />
-
       <div className="main-content">
         <Filters
           displayMode={displayMode}
@@ -104,7 +103,7 @@ const App: React.FC = () => {
           barHeight={barHeight}
         />
         {coreReady ?
-          <TriviaGroupedBarChart
+          <TriviaCharts
             groupedCategories={groupedCategories}
             displayedCategories={displayedCategories}
             displayMode={displayMode}
