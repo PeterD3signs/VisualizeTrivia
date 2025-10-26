@@ -122,7 +122,7 @@ const Filters: React.FC<Props> = ({
                     }}
                 >
                     {((displayMode === "difficulty" && selectedLevels.includes("easy") && selectedLevels.includes("medium") && selectedLevels.includes("hard")) || (displayMode === "acceptance" && selectedLevels.includes("pending") && selectedLevels.includes("verified")) && selectedLevels.includes("rejected")) && selectedLevels.includes("sum") ?
-                        "Unselect All" : "Select All"}
+                        "Deselect All" : "Select All"}
 
                 </button>
             </div>
@@ -179,7 +179,7 @@ const Filters: React.FC<Props> = ({
                     {groupedCategories
                         .flatMap(g => g.list)
                         .every(cat => displayedCategories.has(cat.id))
-                        ? "Unselect All"
+                        ? "Deselect All"
                         : "Select All"}
                 </button>
             </div>
