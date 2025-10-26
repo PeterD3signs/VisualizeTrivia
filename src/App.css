@@ -9,3 +9,18 @@
 .main-content {
   display: flex;
 }
+
+.extend-filters-button {
+  appearance: none;
+  background: none;
+  color: var(--color-primary);
+  border: none;
+  font-size: 1.5rem;
+  display: flex;
+  font-weight: bold;
+}
+
+.extend-button-wrapper {
+  display: flex;
+  justify-content: center;
+}

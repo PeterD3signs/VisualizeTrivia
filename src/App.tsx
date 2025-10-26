@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Header from './components/Header';
 import Filters from './components/Filters';
 import Footer from './components/Footer';
@@ -19,8 +19,12 @@ const App: React.FC = () => {
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['pending', 'verified', 'rejected', 'sum']); //question difficulty / acceptance levels
   const [darkMode, setDarkMode] = useState(false);
   const [winWidth, setWinWidth] = useState(window.innerWidth);  //window width
+  const [filtersExtended, setFiltersExtended] = useState(false);
 
   const mobileWidth = 800;
+  const mobileMode = useMemo(() => {
+    return (winWidth < mobileWidth);
+  }, [winWidth, mobileWidth])
 
   // Group the categories based on their type: (accepts all categories in one array; each category is eihther "General" or has a prefix with its type)
   const groupCategories = (categories: Category[]): GroupedCategory[] => {
@@ -79,7 +83,7 @@ const App: React.FC = () => {
 
     const saved = localStorage.getItem("theme");
     if (saved === "dark") setDarkMode(true);
-    
+
     const handleResize = () => setWinWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -96,29 +100,35 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Header 
+      <Header
         width={winWidth}
         mobileWidth={mobileWidth}
       />
-      {winWidth < mobileWidth && <Filters
-          displayMode={displayMode}
-          setDisplayMode={setDisplayMode}
-          selectedLevels={selectedLevels}
-          setSelectedLevels={setSelectedLevels}
-          groupedCategories={groupedCategories}
-          setDisplayedCategories={setDisplayedCategories}
-          displayedCategories={displayedCategories}
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-          setBarHeight={setBarHeight}
-          barHeight={barHeight}
-          pieChart={pieChart}
-          setPieChart={setPieChart}
-          winWidth={winWidth}
-          mobileWidth={mobileWidth}
-        />}
+      {mobileMode && <Filters
+        displayMode={displayMode}
+        setDisplayMode={setDisplayMode}
+        selectedLevels={selectedLevels}
+        setSelectedLevels={setSelectedLevels}
+        groupedCategories={groupedCategories}
+        setDisplayedCategories={setDisplayedCategories}
+        displayedCategories={displayedCategories}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        setBarHeight={setBarHeight}
+        barHeight={barHeight}
+        pieChart={pieChart}
+        setPieChart={setPieChart}
+        mobileMode={mobileMode}
+        filtersExtended={filtersExtended}
+      />}
+      {mobileMode &&
+        <div className="extend-button-wrapper">
+          <button className="extend-filters-button" onClick={() => setFiltersExtended(!filtersExtended)}>
+            {filtersExtended ? "△ collapse filters △" : "▽ extend filters ▽"}
+          </button>
+        </div>}
       <div className="main-content">
-        {winWidth >= mobileWidth && <Filters
+        {!mobileMode && <Filters
           displayMode={displayMode}
           setDisplayMode={setDisplayMode}
           selectedLevels={selectedLevels}
@@ -132,8 +142,8 @@ const App: React.FC = () => {
           barHeight={barHeight}
           pieChart={pieChart}
           setPieChart={setPieChart}
-          winWidth={winWidth}
-          mobileWidth={mobileWidth}
+          mobileMode={mobileMode}
+          filtersExtended={filtersExtended}
         />}
         {coreReady ?
           <TriviaCharts
@@ -147,9 +157,9 @@ const App: React.FC = () => {
           :
           <LoadingSpinner />
         }
-        
+
       </div>
-      <Footer 
+      <Footer
         width={winWidth}
         mobileWidth={mobileWidth}
       />

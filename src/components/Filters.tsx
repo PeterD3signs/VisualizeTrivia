@@ -1,7 +1,6 @@
 import React from 'react';
 import './componentStyles/Filters.css';
 import type { GroupedCategory } from '../data/categories';
-import { useMemo } from 'react';
 
 interface Props {
     selectedLevels: string[];   //difficulty levels / acceptance levels - 'easy', 'medium', 'hard', 'sum' / 'pending', 'verified', 'rejected', 'sum'.
@@ -11,8 +10,8 @@ interface Props {
     darkMode: boolean;
     barHeight: number;
     pieChart: boolean;
-    winWidth: number;
-    mobileWidth: number;
+    mobileMode: boolean;
+    filtersExtended: boolean;
     setDisplayMode: (mode: 'difficulty' | 'acceptance') => void;
     setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
     setDisplayedCategories: React.Dispatch<React.SetStateAction<Set<number>>>;
@@ -35,21 +34,19 @@ const Filters: React.FC<Props> = ({
     setBarHeight,
     pieChart,
     setPieChart,
-    winWidth,
-    mobileWidth
+    mobileMode,
+    filtersExtended
 }) => {
     const toggleLevel = (level: string) => {    //add or delete a given difficulty level.
         setSelectedLevels(prev =>
             prev.includes(level) ? prev.filter(l => l !== level) : [...prev, level]
         );
     };
-    const mobileMode = useMemo(() => {
-        return (winWidth < mobileWidth);
-    }, [winWidth, mobileWidth])
 
+    if (filtersExtended || !mobileMode){
     return (
-        <div className={`filters-wrapper ${mobileMode ? "filters-bottom-border" : ""}`}>
-            <div className={`filters filters-left ${mobileMode ? "filters-right-border" : ""}`} style={{width: mobileMode ? "100%" : "20rem"}}>
+         <div className={`filters-wrapper ${mobileMode ? "filters-bottom-border" : ""}`}>
+            <div className={`filters filters-left ${mobileMode ? "filters-right-border" : ""}`} style={{ width: mobileMode ? "100%" : "20rem" }}>
                 {/* visualize question difficulty or question acceptance status */}
                 <div className="dividing-line"></div>
                 <p><b>PLOT QUESTIONS BY:</b></p>
@@ -250,10 +247,10 @@ const Filters: React.FC<Props> = ({
                     </button>
                 </div>
             </div>
-            { mobileMode &&
-            <div className="filters filters-right">
-                <p><b>CATEGORIES:</b></p>
-                <div className="filters-section">
+            {mobileMode &&
+                <div className="filters filters-right">
+                    <p><b>CATEGORIES:</b></p>
+                    <div className="filters-section">
                         {groupedCategories.map(group => (
                             <div key={group.title} className="filters-group">
                                 <span className="filters-group-title"><b>{"\u00A0".repeat(20 - group.title.length)}{group.title}</b></span>
@@ -281,7 +278,7 @@ const Filters: React.FC<Props> = ({
                             </div>
                         ))}
                     </div>
-                <div className="filters-text-button-wrapper">
+                    <div className="filters-text-button-wrapper">
                         <button
                             className="filters-text-button"
                             onClick={() => {
@@ -305,10 +302,14 @@ const Filters: React.FC<Props> = ({
                                 : "Select All"}
                         </button>
                     </div>
-            </div>
+                </div>
             }
         </div>
     );
+} else {
+    return (<></>);
+}
+
 };
 
 export default Filters;
