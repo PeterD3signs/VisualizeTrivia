@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [displayedCategories, setDisplayedCategories] = useState<Set<number>>(new Set());  //should this category be displayed on the graph?
   const [coreReady, setCoreReady] = useState(false);  //to see if loading of core API data is complete (see apiCall.ts)
   const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
-  //const [pieChart, setPieChart] = useState(false);  //Display a standard chart or a Pie chart?
+  const [pieChart, setPieChart] = useState(false);  //Display a standard chart or a Pie chart?
   const [barHeight, setBarHeight] = useState(15); // Default height
   const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('acceptance');  //should the chart show the question count devided by their difficulty or by their acceptance status
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['pending', 'verified', 'rejected', 'sum']); //question difficulty / acceptance levels
@@ -101,6 +101,8 @@ const App: React.FC = () => {
           setDarkMode={setDarkMode}
           setBarHeight={setBarHeight}
           barHeight={barHeight}
+          pieChart={pieChart}
+          setPieChart={setPieChart}
         />
         {coreReady ?
           <TriviaCharts
@@ -109,6 +111,7 @@ const App: React.FC = () => {
             displayMode={displayMode}
             selectedLevels={selectedLevels}
             barHeight={barHeight}
+            pieChart={pieChart}
           />
           :
           <LoadingSpinner />

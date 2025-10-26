@@ -10,6 +10,7 @@ interface Props {
     displayMode: "difficulty" | "acceptance";
     selectedLevels: string[];
     barHeight: number;
+    pieChart: boolean;
 }
 
 const TriviaCharts: React.FC<Props> = ({
@@ -17,7 +18,8 @@ const TriviaCharts: React.FC<Props> = ({
     displayedCategories,
     displayMode,
     selectedLevels,
-    barHeight
+    barHeight,
+    pieChart
 }) => {
 
     // Prepare data for the chart
@@ -79,19 +81,34 @@ const TriviaCharts: React.FC<Props> = ({
         hard: "var(--color-title)",
     };
 
-    return (
-        <div className="trivia-bar-chart">
-            <h2>Number of questions per category:</h2>
-            <BarChartComponent
-                data={data}
-                chartHeight={chartHeight}
-                gapBetweenCategories={gapBetweenCategories}
-                barHeight={barHeight}
-                visibleLevels={visibleLevels}
-                colorMap={colorMap}
-            />
-        </div>
-    );
+    if (pieChart) {
+        return (
+            <div className="trivia-bar-chart">
+                <h2>Percantage share of questions per selected categories:</h2>
+                <BarChartComponent
+                    data={data}
+                    chartHeight={chartHeight}
+                    gapBetweenCategories={gapBetweenCategories}
+                    barHeight={barHeight}
+                    visibleLevels={visibleLevels}
+                    colorMap={colorMap}
+                />
+            </div>);
+    } else {
+        return (
+            <div className="trivia-bar-chart">
+                <h2>Number of questions per category:</h2>
+                <BarChartComponent
+                    data={data}
+                    chartHeight={chartHeight}
+                    gapBetweenCategories={gapBetweenCategories}
+                    barHeight={barHeight}
+                    visibleLevels={visibleLevels}
+                    colorMap={colorMap}
+                />
+            </div>
+        );
+    }
 };
 
 export default TriviaCharts;

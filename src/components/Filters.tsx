@@ -9,11 +9,13 @@ interface Props {
     displayedCategories: Set<number>;
     darkMode: boolean;
     barHeight: number;
+    pieChart: boolean;
     setDisplayMode: (mode: 'difficulty' | 'acceptance') => void;
     setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
     setDisplayedCategories: React.Dispatch<React.SetStateAction<Set<number>>>;
     setDarkMode: (value: boolean) => void;
     setBarHeight: (value: number) => void;
+    setPieChart: (value: boolean) => void;
 }
 
 const Filters: React.FC<Props> = ({
@@ -27,7 +29,9 @@ const Filters: React.FC<Props> = ({
     darkMode,
     barHeight,
     setDarkMode,
-    setBarHeight
+    setBarHeight,
+    pieChart,
+    setPieChart
 }) => {
     const toggleLevel = (level: string) => {    //add or delete a given difficulty level.
         setSelectedLevels(prev =>
@@ -48,6 +52,17 @@ const Filters: React.FC<Props> = ({
                     <div className={`toggle-circle ${displayMode === "difficulty" ? "selected" : ""}`}></div>
                 </button>
                 <p className={`${displayMode === "difficulty" ? "toggle-p" : ""}`}>Difficulty</p>
+            </div>
+            <div className="dividing-line additional-top-margin"></div>
+
+            {/* graph type */}
+            <p><b>GRAPH TYPE:</b></p>
+            <div className="data-type-toggle">
+                <p className={`${pieChart ? "toggle-p" : ""}`} >Cumulative</p>
+                <button className="toggle-button" onClick={() => setPieChart(!pieChart)}>
+                    <div className={`toggle-circle ${!pieChart ? "selected" : ""}`}></div>
+                </button>
+                <p className={`${!pieChart ? "toggle-p" : ""}`}>By category</p>
             </div>
             <div className="dividing-line additional-top-margin"></div>
 
