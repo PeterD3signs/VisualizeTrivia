@@ -24,9 +24,6 @@
 
 import type { Category, CategoryName, CategoryAcceptanceCount } from "./categories";
 
-// Counts cache (to not run calls all the time)
-let maxId: number = 0;
-
 // Fetch all category names
 async function fetchCategoryNames(): Promise<CategoryName[]> {
 
@@ -83,16 +80,6 @@ async function fetchCategoryCounts(): Promise<CategoryAcceptanceCount[]> {
             total_num_of_rejected_questions: c.total_num_of_rejected_questions,
         })
     );
-
-    // Add the "All" global summary
-    maxId = Math.max(...categoryArray.map(c => c.id)) + 1;
-    categoryArray.push({
-        id: maxId,
-        total_num_of_pending_questions: data.overall.total_num_of_pending_questions,
-        total_num_of_verified_questions: data.overall.total_num_of_verified_questions,
-        total_num_of_rejected_questions: data.overall.total_num_of_rejected_questions,
-    });
-
     return categoryArray;
 }
 
@@ -110,9 +97,6 @@ export async function getCategorySummary(): Promise<Category[]> {
     } catch (e) {
         console.error(e);
     }
-
-    // Add the "All" category to names:
-    names.push({ id: maxId, name: "All" });
 
     // Populating global counts
     return names.map((nItem: CategoryName) => {

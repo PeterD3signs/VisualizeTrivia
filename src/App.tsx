@@ -12,6 +12,7 @@ const App: React.FC = () => {
   const [displayedCategories, setDisplayedCategories] = useState<Set<number>>(new Set());  //should this category be displayed on the graph?
   const [coreReady, setCoreReady] = useState(false);  //to see if loading of core API data is complete (see apiCall.ts)
   const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
+  //const [pieChart, setPieChart] = useState(false);  //Display a standard chart or a Pie chart?
   const [barHeight, setBarHeight] = useState(15); // Default height
   const [displayMode, setDisplayMode] = useState<'difficulty' | 'acceptance'>('acceptance');  //should the chart show the question count devided by their difficulty or by their acceptance status
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['pending', 'verified', 'rejected', 'sum']); //question difficulty / acceptance levels
@@ -22,7 +23,6 @@ const App: React.FC = () => {
     const grouped: Record<string, Category[]> = {};
     categories.forEach((cat) => {
       if (!cat.name) return;  //if the category does not have a name, it is better to skip it
-      if (cat.name == "All") return;  //the "all" category will be grupped separatelly
 
       let title = "General";
       let displayName = cat.name;
@@ -52,7 +52,7 @@ const App: React.FC = () => {
         setDisplayedCategories(new Set(quick.map(cat => cat.id)));
         setCoreReady(true); //update to no longer show "loading..."
 
-        for (const cat of quick.slice(0, -1)) {  //dynamically load additional data that takes longer to fetch from the API (categorie "ALL" excluded)
+        for (const cat of quick) {  //dynamically load additional data that takes longer to fetch from the API
           try {
             const updatedCounts = await modifyDifficultyCounts(cat);
             setGroupedCategories(prev =>
