@@ -1,0 +1,13 @@
+.trivia-bar-chart {
+    position: relative;
+    width: 100%;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+  
+  .group-bracket text {
+    font-family: "Inter", sans-serif;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+  

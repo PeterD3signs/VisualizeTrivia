@@ -1,19 +1,13 @@
-.app {
-  background-color: #f3f4f6;
-  color: #1f2937;
-  min-height: 100vh;
-  font-family: monospace;
-}
-
-.app.dark {
-  background-color: #1f2937;
-  color: #f9fafb;
-}
-
 .loading, .error {
   text-align: center;
   padding: 20px;
   font-size: 1.2rem;
   font-weight: bold;
   color: #ef4444;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: rowś;
+  
 }

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Filters from './components/Filters';
 import { getCategorySummary, getDifficultyCounts } from './data/apiCall';
-import type { Category, GroupedCategory, DisplayedCategory } from './data/categories';
+import type { Category, GroupedCategory } from './data/categories';
+import TriviaGroupedBarChart from './components/TriviaBarChart';
+import "./App.css"
 
 const App: React.FC = () => {
   const [groupedCategories, setGroupedCategories] = useState<GroupedCategory[]>([]);  //categories dynamically grouped by their type (default: "general", "science", "entertainment")
-  const [displayedCategories, setDisplayedCategories] = useState<DisplayedCategory[]>([]);  //should this category be displayed on the graph?
+  const [displayedCategories, setDisplayedCategories] = useState<Set<number>>(new Set());  //should this category be displayed on the graph?
   const [coreReady, setCoreReady] = useState(false);  //to see if loading of core API data is complete (see apiCall.ts)
   const [error, setError] = useState<string | null>(null); //to display potential breaking errors (non-essential errors are handled in each function)
 
@@ -35,18 +37,9 @@ const App: React.FC = () => {
     });
 
     //return the Object as a GroupedCategory array:
-    return Object.entries(grouped).map(([title, list]) => ({title, list}));
+    return Object.entries(grouped).map(([title, list]) => ({ title, list }));
   };
-
-  const changeCategorySelection = ((prevState: DisplayedCategory[], IdOfCatToChange: number): DisplayedCategory[] => {
-    //iterate over categories (cat) -> if cat.id === IdOfCatToChange -> change its boolean value
-    return prevState.map(cat =>
-      cat.id === IdOfCatToChange
-        ? { ...cat, display: !cat.display } // toggle only the matching category
-        : cat // keep the rest unchanged
-    );
-  });
-
+  
   //dynamically calculate necessary values and update the UI (this only runs on):
   useEffect(() => {
     async function fetchCategories() {
@@ -54,12 +47,7 @@ const App: React.FC = () => {
 
         const quick = await getCategorySummary(); //load core data
         setGroupedCategories(groupCategories(quick));
-        setDisplayedCategories( //set up which categories should be displayed on the chart
-          quick.map(cat => ({
-            id: cat.id,
-            display: true, // default value
-          }))
-        );
+        setDisplayedCategories(new Set(quick.map(cat => cat.id)));
         setCoreReady(true); //update to no longer show "loading..."
 
         for (const cat of quick.slice(0, -1)) {  //dynamically load additional data that takes longer to fetch from the API (categorie "ALL" excluded)
@@ -94,7 +82,7 @@ const App: React.FC = () => {
   //TODO: check styles
   //TODO: add about
   return (
-    <div className={darkMode ? 'app dark' : 'app'}>
+    <div>
       <Header />
       <div className="main-content">
         <Filters
@@ -104,10 +92,15 @@ const App: React.FC = () => {
           setSelectedLevels={setSelectedLevels}
           groupedCategories={groupedCategories}
           setDisplayedCategories={setDisplayedCategories}
-          changeCategorySelection={changeCategorySelection}
           displayedCategories={displayedCategories}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
+        />
+        <TriviaGroupedBarChart
+          groupedCategories={groupedCategories}
+          displayedCategories={displayedCategories}
+          displayMode={displayMode}
+          selectedLevels={selectedLevels}
         />
       </div>
     </div>

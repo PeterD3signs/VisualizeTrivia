@@ -24,11 +24,6 @@ export type GroupedCategory = {
     list: Category[];
 };
 
-export type DisplayedCategory = {
-    id: number;
-    display: boolean;
-}
-
 //In case api calls completely dont work:
 export const fallbackCategories: { title: string; list: Category[] }[] = [   //TODO: add more data here
     {

@@ -1,17 +1,16 @@
 import React from 'react';
 import './componentStyles/Filters.css';
-import type { DisplayedCategory, GroupedCategory } from '../data/categories';
+import type { GroupedCategory } from '../data/categories';
 
 interface Props {
     selectedLevels: string[];   //difficulty levels / acceptance levels - 'easy', 'medium', 'hard', 'sum' / 'pending', 'verified', 'rejected', 'sum'.
     displayMode: 'difficulty' | 'acceptance';
     groupedCategories: GroupedCategory[];
-    displayedCategories: DisplayedCategory[];
+    displayedCategories: Set<number>;
     darkMode: boolean;
     setDisplayMode: (mode: 'difficulty' | 'acceptance') => void;
     setSelectedLevels: React.Dispatch<React.SetStateAction<string[]>>;
-    setDisplayedCategories: React.Dispatch<React.SetStateAction<DisplayedCategory[]>>;
-    changeCategorySelection: (prevState: DisplayedCategory[], IdOfCatToChange: number) => DisplayedCategory[];
+    setDisplayedCategories: React.Dispatch<React.SetStateAction<Set<number>>>;
     setDarkMode: (value: boolean) => void;
 }
 
@@ -23,7 +22,6 @@ const Filters: React.FC<Props> = ({
     groupedCategories,
     setDisplayedCategories,
     displayedCategories,
-    changeCategorySelection,
     darkMode,
     setDarkMode,
 }) => {
@@ -133,9 +131,7 @@ const Filters: React.FC<Props> = ({
                     <div key={group.title} className="filters-group">
                         <span className="filters-group-title"><b>{"\u00A0".repeat(20 - group.title.length)}{group.title}</b></span>
                         {group.list.map(cat => {
-                            // Find the matching category in the flat displayedCategories array
-                            const displayedCat = displayedCategories.find(dc => dc.id === cat.id);
-                            const isChecked = displayedCat?.display ?? true; // default to true if not found
+                            const isChecked = displayedCategories.has(cat.id); // default to true if not found
 
                             return (
                                 <label key={cat.id} className="filters-checkbox-label">
@@ -144,9 +140,12 @@ const Filters: React.FC<Props> = ({
                                         type="checkbox"
                                         checked={isChecked}
                                         onChange={() => {
-                                            setDisplayedCategories(prev =>
-                                                changeCategorySelection(prev, cat.id)
-                                            );
+                                            setDisplayedCategories(prev => {
+                                                const newSet = new Set(prev);
+                                                if (newSet.has(cat.id)) newSet.delete(cat.id);
+                                                else newSet.add(cat.id);
+                                                return newSet;
+                                            });
                                         }}
                                     />
                                 </label>
@@ -160,12 +159,22 @@ const Filters: React.FC<Props> = ({
                 <button
                     className="filters-text-button"
                     onClick={() => {
-                        const allSelected = displayedCategories.every(cat => cat.display);  //check whether all fields are selected
-                        setDisplayedCategories(prev => prev.map(dc => ({ ...dc, display: !allSelected })) //set the fields to an inverse of allSelected (works no matter the current state)
-                        );
+                        const allSelected = groupedCategories.flatMap(g => g.list).every(cat => displayedCategories.has(cat.id));  //check whether all fields are selected
+                        setDisplayedCategories(() => {
+                            if (allSelected) {
+                                return new Set();
+                            } else {
+                                return new Set(
+                                    groupedCategories.flatMap(g => g.list.map(c => c.id))
+                                );
+                            }
+
+                        });
                     }}
                 >
-                    {displayedCategories.every(cat => cat.display)
+                    {groupedCategories
+                        .flatMap(g => g.list)
+                        .every(cat => displayedCategories.has(cat.id))
                         ? "Unselect All"
                         : "Select All"}
                 </button>

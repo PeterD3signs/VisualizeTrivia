@@ -1,0 +1,171 @@
+import React, { useMemo, useRef, useEffect } from "react";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend,
+} from "recharts";
+import "./componentStyles/TriviaBarChart.css";
+import type { GroupedCategory } from "../data/categories";
+
+interface Props {
+  groupedCategories: GroupedCategory[];
+  displayedCategories: Set<number>; // updated to Set
+  displayMode: "difficulty" | "acceptance";
+  selectedLevels: string[];
+}
+
+const TriviaGroupedBarChart: React.FC<Props> = ({
+  groupedCategories,
+  displayedCategories,
+  displayMode,
+  selectedLevels,
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Prepare data for the chart
+  const data = useMemo(() => {
+    const rows: {
+      id: number;
+      categoryName: string;
+      groupTitle: string;
+      pending?: number;
+      verified?: number;
+      rejected?: number;
+      sum?: number;
+      easy?: number;
+      medium?: number;
+      hard?: number;
+    }[] = [];
+
+    for (const group of groupedCategories) {
+      for (const c of group.list) {
+        if (!displayedCategories.has(c.id)) continue;
+
+        rows.push({
+          id: c.id,
+          categoryName: c.name ?? "Unnamed",
+          groupTitle: group.title,
+          pending: c.total_num_of_pending_questions ?? 0,
+          verified: c.total_num_of_verified_questions ?? 0,
+          rejected: c.total_num_of_rejected_questions ?? 0,
+          sum: c.total_num_of_questions ?? 0,
+          easy: c.total_easy_question_count ?? 0,
+          medium: c.total_medium_question_count ?? 0,
+          hard: c.total_hard_question_count ?? 0,
+        });
+      }
+    }
+
+    return rows;
+  }, [groupedCategories, displayedCategories]);
+
+  // Determine which bars to display
+  const levels =
+    displayMode === "acceptance"
+      ? ["pending", "verified", "rejected", "sum"]
+      : ["easy", "medium", "hard", "sum"];
+
+  const visibleLevels = levels.filter((l) => selectedLevels.includes(l));
+
+  const colorMap: Record<string, string> = {
+    pending: "var(--color-accent)",
+    verified: "var(--color-primary)",
+    rejected: "var(--color-title)",
+    sum: "var(--color-second-bg)",
+    easy: "var(--color-accent)",
+    medium: "var(--color-primary)",
+    hard: "var(--color-title)",
+  };
+
+  // Draw curly brackets for groups
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Remove old brackets
+    const oldBrackets = container.querySelectorAll(".group-bracket");
+    oldBrackets.forEach((el) => el.remove());
+
+    const chartEl = container.querySelector(".recharts-wrapper");
+    if (!chartEl) return;
+
+    let yOffset = 40;
+    groupedCategories.forEach((group) => {
+      const groupList = group.list.filter((c) => displayedCategories.has(c.id));
+      if (groupList.length === 0) return;
+
+      const bracket = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      bracket.setAttribute("class", "group-bracket");
+      bracket.style.position = "absolute";
+      bracket.style.left = "0px";
+      bracket.style.top = `${yOffset}px`;
+      bracket.style.width = "24px";
+      bracket.style.height = `${groupList.length * 40}px`;
+      bracket.style.overflow = "visible";
+
+      bracket.innerHTML = `
+        <path d="M20 0 q-10 10 -10 20 v${groupList.length * 40 - 40} q0 10 10 20" 
+          fill="none" stroke="var(--color-text)" stroke-width="2" />
+        <text x="0" y="${(groupList.length * 40) / 2}" 
+          fill="var(--color-text)" font-size="12" 
+          text-anchor="start" dominant-baseline="middle">${group.title}</text>
+      `;
+
+      container.appendChild(bracket);
+      yOffset += groupList.length * 40;
+    });
+  }, [groupedCategories, displayedCategories]);
+
+  return (
+    <div className="trivia-bar-chart" ref={containerRef}>
+      <ResponsiveContainer width="100%" height={400}>
+        <BarChart
+          layout="vertical"
+          data={data}
+          margin={{ top: 30, right: 40, left: 60, bottom: 30 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--color-second-bg)" />
+          <XAxis
+            type="number"
+            tick={{ fill: "var(--color-text)" }}
+            label={{
+              value: "Number of questions",
+              position: "bottom",
+              fill: "var(--color-text)",
+            }}
+          />
+          <YAxis
+            dataKey="categoryName"
+            type="category"
+            tick={{ fill: "var(--color-text)" }}
+            width={150}
+          />
+          <Tooltip
+            contentStyle={{
+              background: "var(--color-bg)",
+              color: "var(--color-text)",
+              border: "1px solid var(--color-second-bg)",
+            }}
+          />
+          <Legend />
+          {visibleLevels.map((lvl) => (
+            <Bar
+              key={lvl}
+              dataKey={lvl}
+              fill={colorMap[lvl]}
+              barSize={16}
+              radius={[3, 3, 3, 3]}
+            />
+          ))}
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default TriviaGroupedBarChart;
