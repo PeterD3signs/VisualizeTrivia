@@ -94,7 +94,7 @@ const TriviaGroupedBarChart: React.FC<Props> = ({
         <BarChart
           layout="vertical"
           data={data}
-          margin={{ top: 30, right: 40, left: 30, bottom: 30 }}
+          margin={{ top: 30, right: 40, left: 30, bottom: 60 }}
           barGap={0}
           barCategoryGap={gapBetweenCategories}
         >

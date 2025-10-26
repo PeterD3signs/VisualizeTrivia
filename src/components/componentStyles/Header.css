@@ -15,7 +15,9 @@
   padding: 0;
   border: 0;
   box-sizing: border-box;
-  margin-right: 2rem;
+  display:flex;
+  align-items: right;
+  margin-right: 1rem;
 }
 
 .header-start {
@@ -27,5 +29,10 @@
 .header-title{
   margin: 0;
   padding: 0;
+  margin-left: 1rem;
   color: var(--color-title);
+}
+
+.app-logo {
+  width: 5rem;
 }

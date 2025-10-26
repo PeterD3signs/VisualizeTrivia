@@ -194,7 +194,7 @@ const Filters: React.FC<Props> = ({
                     <input
                         id="barHeightSlider"
                         type="range"
-                        min={5}
+                        min={2}
                         max={50}
                         value={barHeight}
                         onChange={(e) => setBarHeight(Number(e.target.value))}
