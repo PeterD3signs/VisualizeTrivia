@@ -86,7 +86,7 @@ const TriviaCharts: React.FC<Props> = ({
     if (pieChart) {
         return (
             <div className="trivia-bar-chart">
-                <h2>Share of questions in selected categories:</h2>
+                <h2 className={`${mobileMode ? "mobile-title" : ""}`}>Share of questions in selected categories:</h2>
                 <PieChartComponent
                     data={data}
                     colorMap={colorMap}
