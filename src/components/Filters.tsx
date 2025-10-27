@@ -56,7 +56,7 @@ const Filters: React.FC<Props> = ({
                     <button className={`toggle-button ${mobileMode ? "toggle-button-mobile" : ""}`} onClick={() => setDisplayMode(displayMode === "difficulty" ? "acceptance" : "difficulty")}>
                         <div className={`toggle-circle ${displayMode === "difficulty" ? "selected" : ""}`}></div>
                     </button>
-                    <p className={`${displayMode === "difficulty" ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`}>Difficulty</p>
+                    <p className={`${displayMode === "difficulty" ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`}>{mobileMode ? "Diffic..." : "Difficulty"}</p>
                 </div>
                 <div className={`dividing-line additional-top-margin ${mobileMode ? "line-div-mobile" : ""}`}></div>
 
@@ -212,7 +212,7 @@ const Filters: React.FC<Props> = ({
                 <p><b>MISC:</b></p>
                 <div className="misc-controls">
                     {/* BarHeightSlider */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "1rem"}}>
                         <label htmlFor="barHeightSlider">Bar Height</label>
                         <input
                             id="barHeightSlider"

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import BarChartComponent from "./BarChartComponent";
 import PieChartComponent from "./PieChartComponent";
-import "./componentStyles/TriviaBarChart.css";
+import "./componentStyles/TriviaCharts.css";
 import type { GroupedCategory } from "../data/categories";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
     selectedLevels: string[];
     barHeight: number;
     pieChart: boolean;
+    mobileMode: boolean;
 }
 
 const TriviaCharts: React.FC<Props> = ({
@@ -19,7 +20,8 @@ const TriviaCharts: React.FC<Props> = ({
     displayMode,
     selectedLevels,
     barHeight,
-    pieChart
+    pieChart,
+    mobileMode
 }) => {
 
     // Prepare data for the chart
@@ -94,7 +96,7 @@ const TriviaCharts: React.FC<Props> = ({
     } else {
         return (
             <div className="trivia-bar-chart">
-                <h2>Number of questions per category:</h2>
+                <h2 className={`${mobileMode ? "mobile-title" : ""}`}>Number of questions per category:</h2>
                 <BarChartComponent
                     data={data}
                     chartHeight={chartHeight}
@@ -102,6 +104,7 @@ const TriviaCharts: React.FC<Props> = ({
                     barHeight={barHeight}
                     visibleLevels={visibleLevels}
                     colorMap={colorMap}
+                    mobileMode={mobileMode}
                 />
             </div>
         );

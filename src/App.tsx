@@ -152,6 +152,7 @@ const App: React.FC = () => {
             selectedLevels={selectedLevels}
             barHeight={barHeight}
             pieChart={pieChart}
+            mobileMode={mobileMode}
           />
           :
           <LoadingSpinner />

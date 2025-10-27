@@ -1,4 +1,5 @@
 import React from "react";
+import { useMemo } from "react";
 
 import {
     BarChart,
@@ -29,6 +30,7 @@ interface BarChartComponentProps {
     barHeight: number;
     visibleLevels: string[];
     colorMap: Record<string, string>;
+    mobileMode: boolean;
 }
 
 const BarChartComponent: React.FC<BarChartComponentProps> = ({
@@ -38,7 +40,10 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
     barHeight,
     visibleLevels,
     colorMap,
+    mobileMode
 }) => {
+    const yAxisWidth = useMemo(() => {return mobileMode ? 70 : 110}, [mobileMode]);
+
     return (
         <ResponsiveContainer width="100%" height={chartHeight}>
             <BarChart
@@ -63,7 +68,7 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
                     dataKey="categoryName"
                     type="category"
                     tick={{ fill: "var(--color-text)" }}
-                    width={110}
+                    width={yAxisWidth}
                 />
                 <Tooltip
                     contentStyle={{
