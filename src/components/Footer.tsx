@@ -1,5 +1,7 @@
 import React from 'react';
 import './componentStyles/Footer.css';
+import ghlogo from "../assets/github.png"
+import lilogo from "../assets/linkedin.png"
 
 interface Props {
     width: number;
@@ -13,10 +15,10 @@ const Header: React.FC<Props> = ({width, mobileWidth}) => {
                 <div className="link-container">
                     <p className="title">Socials</p>
                     <a className="link" href="https://github.com/PeterD3signs/" target="_blank" rel="noopener noreferrer">
-                        <img src={`${import.meta.env.BASE_URL}github.png`} alt="" className="app-logo-gh" />GitHub
+                        <img src={ghlogo} alt="" className="app-logo-gh" onError={(e) => (e.currentTarget.style.display = "none")}/>GitHub
                     </a>
                     <a className="link" href="https://www.linkedin.com/in/piotr-kosowicz-4896b9352" target="_blank" rel="noopener noreferrer">
-                        <img src={`${import.meta.env.BASE_URL}linkedin.png`} alt="" className="app-logo-li" />LinkedIn
+                        <img src={lilogo} alt="" className="app-logo-li" onError={(e) => (e.currentTarget.style.display = "none")}/>LinkedIn
                     </a>
                 </div>
             </div>
