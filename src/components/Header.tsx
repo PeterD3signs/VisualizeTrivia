@@ -10,7 +10,7 @@ const Header: React.FC<Props> = ({width, mobileWidth}) => {
         <header className="header">
             <div className="header-start">
                 {width > mobileWidth && <div className="color-square"></div>}
-                <img src="/logo.png" className="app-logo" />
+                <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="app-logo" />
                 <h1 className="header-title">VisualizeTrivia</h1>
             </div>
         </header>
