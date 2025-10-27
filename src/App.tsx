@@ -101,8 +101,7 @@ const App: React.FC = () => {
   return (
     <div>
       <Header
-        width={winWidth}
-        mobileWidth={mobileWidth}
+        mobileMode={mobileMode}
       />
       {mobileMode && <Filters
         displayMode={displayMode}
@@ -160,8 +159,7 @@ const App: React.FC = () => {
 
       </div>
       <Footer
-        width={winWidth}
-        mobileWidth={mobileWidth}
+        mobileMode={mobileMode}
       />
     </div>
   );

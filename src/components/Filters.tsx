@@ -52,22 +52,22 @@ const Filters: React.FC<Props> = ({
                 <p><b>PLOT QUESTIONS BY:</b></p>
 
                 <div className="data-type-toggle">
-                    <p className={`${displayMode === "acceptance" ? "toggle-p" : ""}`} >Acceptance</p>
+                    <p className={`${displayMode === "acceptance" ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`} >Acceptance</p>
                     <button className="toggle-button" onClick={() => setDisplayMode(displayMode === "difficulty" ? "acceptance" : "difficulty")}>
                         <div className={`toggle-circle ${displayMode === "difficulty" ? "selected" : ""}`}></div>
                     </button>
-                    <p className={`${displayMode === "difficulty" ? "toggle-p" : ""}`}>Difficulty</p>
+                    <p className={`${displayMode === "difficulty" ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`}>Difficulty</p>
                 </div>
                 <div className="dividing-line additional-top-margin"></div>
 
                 {/* graph type */}
                 <p><b>GRAPH TYPE:</b></p>
                 <div className="data-type-toggle">
-                    <p className={`${pieChart ? "toggle-p" : ""}`} >Cumulative</p>
+                    <p className={`${pieChart ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`} >Cumulative</p>
                     <button className="toggle-button" onClick={() => setPieChart(!pieChart)}>
                         <div className={`toggle-circle ${!pieChart ? "selected" : ""}`}></div>
                     </button>
-                    <p className={`${!pieChart ? "toggle-p" : ""}`}>By category</p>
+                    <p className={`${!pieChart ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`}>By category</p>
                 </div>
                 <div className="dividing-line additional-top-margin"></div>
 

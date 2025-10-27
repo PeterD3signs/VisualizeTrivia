@@ -265,3 +265,7 @@ input[type="range"] {
 .filters-right-border {
     border-right: 2px solid var(--color-primary);
 }
+
+.reduce-p-size {
+    font-size: 0.9rem !important;
+}
