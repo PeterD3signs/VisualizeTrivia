@@ -1,5 +1,4 @@
 .filters {
-    width: 20rem;
     background-color: var(--color-second-bg);
     /* light gray daisyUI bg */
     padding: 12px;
@@ -10,7 +9,6 @@
     margin: 0;
     border: 0;
     box-sizing: border-box;
-    flex: 1
 }
 
 .filters-section {
@@ -57,6 +55,7 @@
     border-radius: 1rem;
     overflow: hidden;
     width: 3rem;
+    min-width: 3rem;
     height: 1.7rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
@@ -177,16 +176,7 @@ p {
     flex-direction: column;
     gap: 0.5rem;
     border-top: 1px solid var(--color-border);
-    align-items: center;
-    padding: 0;
-    margin: 0;
-}
-
-/* Each misc item (toggle + button) */
-.misc-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: start;
     padding: 0;
     margin: 0;
 }
@@ -223,6 +213,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: start;
+    gap: 1.2rem;
 }
 
 .filters-slider {
@@ -250,12 +241,15 @@ input[type="range"] {
 }
 
 .filters-left {
-    max-width: 21rem;
+    max-width: 17rem;
     padding-right: 2rem;
+    flex: auto;
+    width: 15rem !important;
 }
 
 .filters-right {
     padding-left: 2rem;
+    flex: auto;
 }
 
 .filters-bottom-border {
@@ -268,4 +262,13 @@ input[type="range"] {
 
 .reduce-p-size {
     font-size: 0.9rem !important;
+}
+
+.toggle-button-mobile {
+    margin-left: 0.2rem !important;
+    margin-right: 0.2rem !important;
+}
+
+.line-div-mobile {
+    width: 14.5rem !important;
 }

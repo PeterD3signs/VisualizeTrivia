@@ -46,30 +46,30 @@ const Filters: React.FC<Props> = ({
     if (filtersExtended || !mobileMode){
     return (
          <div className={`filters-wrapper ${mobileMode ? "filters-bottom-border" : ""}`}>
-            <div className={`filters filters-left ${mobileMode ? "filters-right-border" : ""}`} style={{ width: mobileMode ? "100%" : "20rem" }}>
+            <div className={`filters ${mobileMode ? "filters-right-border filters-left" : ""}`} style={{ width: mobileMode ? "100%" : "20rem" }}>
                 {/* visualize question difficulty or question acceptance status */}
-                <div className="dividing-line"></div>
+                <div className={`dividing-line ${mobileMode ? "line-div-mobile" : ""}`}></div>
                 <p><b>PLOT QUESTIONS BY:</b></p>
 
                 <div className="data-type-toggle">
                     <p className={`${displayMode === "acceptance" ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`} >Acceptance</p>
-                    <button className="toggle-button" onClick={() => setDisplayMode(displayMode === "difficulty" ? "acceptance" : "difficulty")}>
+                    <button className={`toggle-button ${mobileMode ? "toggle-button-mobile" : ""}`} onClick={() => setDisplayMode(displayMode === "difficulty" ? "acceptance" : "difficulty")}>
                         <div className={`toggle-circle ${displayMode === "difficulty" ? "selected" : ""}`}></div>
                     </button>
                     <p className={`${displayMode === "difficulty" ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`}>Difficulty</p>
                 </div>
-                <div className="dividing-line additional-top-margin"></div>
+                <div className={`dividing-line additional-top-margin ${mobileMode ? "line-div-mobile" : ""}`}></div>
 
                 {/* graph type */}
                 <p><b>GRAPH TYPE:</b></p>
                 <div className="data-type-toggle">
                     <p className={`${pieChart ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`} >Cumulative</p>
-                    <button className="toggle-button" onClick={() => setPieChart(!pieChart)}>
+                    <button className={`toggle-button ${mobileMode ? "toggle-button-mobile" : ""}`} onClick={() => setPieChart(!pieChart)}>
                         <div className={`toggle-circle ${!pieChart ? "selected" : ""}`}></div>
                     </button>
-                    <p className={`${!pieChart ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`}>By category</p>
+                    <p className={`${!pieChart ? "toggle-p" : ""} ${mobileMode ? "reduce-p-size" : ""}`}>{mobileMode ? "Category" : "By category"}</p>
                 </div>
-                <div className="dividing-line additional-top-margin"></div>
+                <div className={`dividing-line additional-top-margin ${mobileMode ? "line-div-mobile" : ""}`}></div>
 
                 {/* 'easy', 'medium', 'hard', 'sum' / 'pending', 'verified', 'rejected', 'sum'. */}
                 {displayMode === "difficulty" ?
@@ -146,7 +146,7 @@ const Filters: React.FC<Props> = ({
 
                     </button>
                 </div>
-                <div className="dividing-line"></div>
+                <div className={`dividing-line ${mobileMode ? "line-div-mobile" : ""}`}></div>
                 {/* category selection */}
                 {!mobileMode && <p><b>CATEGORIES:</b></p>}
                 {!mobileMode &&
@@ -235,12 +235,12 @@ const Filters: React.FC<Props> = ({
                         </div>
                     </div>
                 </div>
-                <div className="dividing-line"></div>
+                <div className={`dividing-line ${mobileMode ? "line-div-mobile" : ""}`}></div>
 
                 {/* Refresh Data Button */}
                 <div className="refresh-data">
                     <button
-                        className="filters-text-button"
+                        className={`filters-text-button ${mobileMode ? "line-div-mobile" : ""}`}
                         onClick={() => window.location.reload()}
                     >
                         Refresh Data
