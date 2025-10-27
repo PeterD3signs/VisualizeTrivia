@@ -71,7 +71,7 @@ const TriviaCharts: React.FC<Props> = ({
     const visibleLevels = levels.filter((l) => selectedLevels.includes(l));
 
     const gapBetweenCategories = 20;
-    const chartHeight: number = useMemo(() => { return data.length * visibleLevels.length * barHeight + data.length * gapBetweenCategories; }, [data, barHeight, gapBetweenCategories, visibleLevels]);
+    const chartHeight: number = useMemo(() => { return Math.max(data.length * visibleLevels.length * barHeight + data.length * gapBetweenCategories, 400); }, [data, barHeight, gapBetweenCategories, visibleLevels]);
 
     const colorMap: Record<string, string> = {
         pending: "var(--color-accent)",
